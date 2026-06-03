@@ -902,11 +902,12 @@
             <pre><code>{
   "id": "ANCHOR-001",
   "photo_id": "IMG-20260528-001",
-  "source": ["Regulation Graph", "Form Field", "Historical Inspection Record"],
+  "graph_path": ["法規/內規", "表單", "歷史資料"],
+  "source_nodes": ["REG-WORK-HEIGHT-001", "FORM-PPE-F03", "HIS-2025-PPE"],
   "work_item": "施工架作業",
   "focus": "高處作業人員是否具備個人防護具與防墜措施",
   "checklist_fields": ["安全帽", "安全帶", "護欄", "踏板完整性"],
-  "similar_cases": ["CASE-2025-0412", "CASE-2025-1020"],
+  "historical_record_refs": ["HIS-2025-0412", "HIS-2025-1020"],
   "prompt_hint": "請優先檢查施工架平台、臨邊與作業人員頭部/腰部防護。"
 }</code></pre>
           </div>
@@ -915,6 +916,7 @@
             <pre><code>{
   "id": "BOX-001",
   "photo_id": "IMG-20260528-001",
+  "anchor_id": "ANCHOR-001",
   "geometry_type": "bbox",
   "coordinates": {
     "x": 0.62,
@@ -936,24 +938,29 @@
             <pre><code>{
   "id": "OBS-001",
   "photo_id": "IMG-20260528-001",
-  "description": "鷹架上方作業人員疑似未配戴安全帽",
-  "location": "影像右上方，鷹架第三層",
-  "linked_annotations": ["BOX-001"],
+  "anchor_id": "ANCHOR-001",
+  "observation_type": "visual_observation",
+  "description": "施工架上有作業人員疑似未配戴安全帽",
+  "location": "影像上方與下方施工架作業區",
+  "linked_annotations": ["BOX-001", "BOX-003"],
   "category_hint": ["PPE", "高處作業", "施工架"],
+  "visual_evidence": ["人員頭部未見安全帽", "人員位於施工架作業區"],
+  "decision_scope": "僅為視覺觀察，非最終違規結論",
   "review_status": "待人工查核",
-  "review_note": "頭部局部被鋼管遮蔽，需由職安人員確認"
+  "review_note": "需由職安人員確認是否確實未配戴安全帽"
 }</code></pre>
           </div>
         </div>
         <div style="margin-top: 18px;">
           <h3>Violation Decision（違規判定資料）</h3>
-          <pre><code>{
+            <pre><code>{
   "id": "VIOLATION-001",
-  "source_observation": "OBS-001",
-  "evidence_annotations": ["BOX-001"],
+  "source_observations": ["OBS-001"],
+  "evidence_annotations": ["BOX-001", "BOX-003"],
   "status": "疑似不符合",
   "severity": "B",
   "matched_rules": ["REG-HEIGHT-PPE-001"],
+  "rule_basis": ["法規/內規", "表單: 個人防護具.安全帽.F03", "歷史資料: HIS-2025-PPE"],
   "improvements": ["補拍近景確認安全帽"],
   "form_bindings": [
     {
