@@ -85,6 +85,11 @@
       outline: none;
     }
 
+    #crkg,
+    #graph-maintenance {
+      display: none;
+    }
+
     .intro {
       display: grid;
       grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
@@ -496,6 +501,440 @@
       margin: 10px 0 0;
     }
 
+    .interactive-stack {
+      display: grid;
+      gap: 24px;
+    }
+
+    .interactive-arch {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .interactive-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+
+    .interactive-head h3 {
+      font-size: 20px;
+      margin: 0 0 6px;
+    }
+
+    .interactive-head p {
+      color: var(--muted);
+      margin: 0;
+      max-width: 780px;
+    }
+
+    .interaction-hint {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 6px 9px;
+      color: #415462;
+      background: #fff;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .interactive-body {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.55fr);
+      min-height: 560px;
+    }
+
+    .flow-picker {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+      padding: 18px;
+      border-right: 1px solid var(--line);
+      background: #f6f8fa;
+    }
+
+    .flow-step {
+      appearance: none;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--blue);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 12px 13px;
+      text-align: left;
+      box-shadow: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+    }
+
+    .flow-step strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.35;
+      margin-bottom: 4px;
+    }
+
+    .flow-step span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .flow-step[data-tone="teal"] { border-left-color: var(--teal); }
+    .flow-step[data-tone="amber"] { border-left-color: var(--amber); }
+    .flow-step[data-tone="red"] { border-left-color: var(--red); }
+    .flow-step[data-tone="green"] { border-left-color: var(--green); }
+
+    .flow-step.is-active,
+    .flow-step:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(33, 102, 165, 0.18);
+      outline: none;
+      transform: translateX(2px);
+    }
+
+    .diagram-panel {
+      padding: 18px;
+      background: #fff;
+      overflow-x: auto;
+    }
+
+    .diagram-canvas {
+      position: relative;
+      min-width: 720px;
+      min-height: 520px;
+      height: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
+      overflow: hidden;
+    }
+
+    .diagram-canvas.compact {
+      min-height: 500px;
+    }
+
+    .clean-svg {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .clean-svg .title {
+      font: 700 16px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      fill: var(--ink);
+    }
+
+    .clean-svg .small {
+      font: 12px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      fill: #526575;
+    }
+
+    .clean-svg .node-label {
+      font: 700 14px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      fill: var(--ink);
+      text-anchor: middle;
+    }
+
+    .clean-svg .node-sub {
+      font: 12px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      fill: #526575;
+      text-anchor: middle;
+    }
+
+    .clean-svg .node-shape {
+      stroke-width: 2.4;
+      transition: filter 0.16s ease, stroke-width 0.16s ease, transform 0.16s ease;
+    }
+
+    .clean-svg .line {
+      stroke: #8ea1ad;
+      stroke-width: 2;
+      fill: none;
+      transition: stroke 0.16s ease, stroke-width 0.16s ease;
+    }
+
+    .clean-svg .guide-line {
+      stroke: #c6d2da;
+      stroke-width: 1.6;
+      stroke-dasharray: 6 7;
+      fill: none;
+    }
+
+    .clean-svg [data-line].is-active {
+      stroke: var(--blue);
+      stroke-width: 3;
+    }
+
+    .clean-svg [data-key].is-active .node-shape,
+    .clean-svg [data-key].is-active.node-shape {
+      filter: drop-shadow(0 8px 12px rgba(24, 32, 39, 0.16));
+      stroke-width: 3.4;
+    }
+
+    .clean-svg [data-key].is-active .halo {
+      opacity: 1;
+    }
+
+    .clean-svg .halo {
+      fill: none;
+      stroke: rgba(33, 102, 165, 0.22);
+      stroke-width: 8;
+      opacity: 0;
+      transition: opacity 0.16s ease;
+    }
+
+    .diagram-lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .diagram-lines path,
+    .diagram-lines line {
+      stroke: #8ba0ad;
+      stroke-width: 1.7;
+      fill: none;
+      transition: stroke 0.16s ease, stroke-width 0.16s ease, opacity 0.16s ease;
+    }
+
+    .diagram-lines .guide {
+      stroke: #c4d0d8;
+      stroke-dasharray: 6 7;
+      stroke-width: 1.6;
+    }
+
+    .diagram-lines .is-active {
+      stroke: var(--blue);
+      stroke-width: 2.8;
+      opacity: 1;
+    }
+
+    .diagram-node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 128px;
+      min-height: 74px;
+      border: 3px solid var(--blue);
+      border-radius: 8px;
+      background: #d7e8fb;
+      color: var(--ink);
+      padding: 10px;
+      text-align: center;
+      line-height: 1.25;
+      transition: box-shadow 0.16s ease, transform 0.16s ease, filter 0.16s ease;
+      z-index: 2;
+    }
+
+    .diagram-node strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
+    .diagram-node span {
+      display: block;
+      margin-top: 4px;
+      color: #526575;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .diagram-node.circle {
+      width: 110px;
+      height: 110px;
+      min-height: 110px;
+      border-radius: 50%;
+    }
+
+    .diagram-node.large-circle {
+      width: 148px;
+      height: 148px;
+      min-height: 148px;
+      border-radius: 50%;
+    }
+
+    .diagram-node.teal {
+      border-color: var(--teal);
+      background: #ccece8;
+    }
+
+    .diagram-node.amber {
+      border-color: var(--amber);
+      background: #f7dfb7;
+    }
+
+    .diagram-node.red {
+      border-color: var(--red);
+      background: #f7d7d7;
+    }
+
+    .diagram-node.green {
+      border-color: var(--green);
+      background: #dcebdc;
+    }
+
+    .diagram-node.purple {
+      border-color: #6f55b5;
+      background: #e5ddf7;
+    }
+
+    .diagram-node.is-active {
+      transform: scale(1.055);
+      box-shadow: 0 0 0 5px rgba(33, 102, 165, 0.18), 0 12px 28px rgba(24, 32, 39, 0.14);
+      filter: saturate(1.08);
+      z-index: 6;
+    }
+
+    .graph-cluster {
+      position: absolute;
+      left: 34%;
+      top: 8%;
+      width: 260px;
+      height: 250px;
+      z-index: 3;
+      transition: filter 0.16s ease, transform 0.16s ease;
+    }
+
+    .graph-cluster.is-active {
+      filter: drop-shadow(0 12px 24px rgba(24, 32, 39, 0.16));
+      transform: scale(1.02);
+    }
+
+    .graph-ring {
+      position: absolute;
+      inset: 10px;
+      border: 2px dashed #c4d0d8;
+      border-radius: 50%;
+    }
+
+    .graph-node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 3px solid var(--blue);
+      background: #d7e8fb;
+      color: var(--ink);
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.25;
+      transition: box-shadow 0.16s ease, transform 0.16s ease;
+    }
+
+    .graph-node.core {
+      left: 76px;
+      top: 82px;
+      width: 96px;
+      height: 96px;
+    }
+
+    .graph-node.form {
+      border-color: var(--red);
+      background: #f7d7d7;
+      width: 72px;
+      height: 72px;
+      font-size: 14px;
+    }
+
+    .graph-node.history {
+      border-color: var(--amber);
+      background: #f7dfb7;
+      width: 70px;
+      height: 70px;
+      font-size: 14px;
+    }
+
+    .graph-node.is-active {
+      transform: scale(1.06);
+      box-shadow: 0 0 0 5px rgba(33, 102, 165, 0.16), 0 10px 22px rgba(24, 32, 39, 0.12);
+      z-index: 5;
+    }
+
+    .layer-legend {
+      position: absolute;
+      right: 28px;
+      top: 28px;
+      display: grid;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      z-index: 4;
+    }
+
+    .legend-item {
+      display: grid;
+      grid-template-columns: 16px 1fr;
+      gap: 8px;
+      align-items: center;
+      color: #40515e;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border: 3px solid var(--blue);
+      border-radius: 50%;
+      background: #d7e8fb;
+    }
+
+    .legend-dot.red {
+      border-color: var(--red);
+      background: #f7d7d7;
+    }
+
+    .legend-dot.amber {
+      border-color: var(--amber);
+      background: #f7dfb7;
+    }
+
+    .diagram-note {
+      position: absolute;
+      left: 28px;
+      top: 28px;
+      max-width: 230px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 11px 12px;
+      color: #526575;
+      font-size: 13px;
+      line-height: 1.45;
+      z-index: 4;
+    }
+
+    .diagram-note strong {
+      display: block;
+      color: var(--ink);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
     .annotation-demo {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
@@ -636,8 +1075,19 @@
 
       .intro,
       .annotation-demo,
-      .rules {
+      .rules,
+      .interactive-body {
         grid-template-columns: 1fr;
+      }
+
+      .interactive-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .flow-picker {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
       }
 
       .grid-4 {
@@ -646,6 +1096,7 @@
 
       .flow {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 620px) {
@@ -687,8 +1138,8 @@
       </div>
       <nav aria-label="頁面導覽">
         <a href="#overview">總覽</a>
-        <a href="#crkg">營造法規知識圖譜</a>
-        <a href="#graph-maintenance">圖譜維護</a>
+        <a href="#interactive-graph">互動架構</a>
+        <a href="#flow-b">圖譜維護</a>
         <a href="#modules">模組</a>
         <a href="#data-format">資料格式</a>
       </nav>
@@ -712,77 +1163,268 @@
 
       <aside class="panel" aria-label="架構摘要">
         <div class="panel-inner">
-          <h2>上到下流程圖</h2>
-          <div class="flow-branches" aria-label="兩種上到下流程圖">
+          <h2>展示板重點</h2>
+          <div class="flow-branches" aria-label="展示板重點">
             <div class="flow-branch">
               <h3>流程 A：VLM + 圖譜判讀主流程</h3>
-              <div class="vertical-flow" aria-label="VLM 加圖譜判讀流程">
-                <div class="flow-card input">
-                  <strong>1. 照片與工程資料</strong>
-                  <span>現場照片、工項、日期、施工階段、承包商。</span>
-                </div>
-
-                <div class="flow-card detect">
-                  <strong>2. 圖譜檢索、法規比對與注意錨點</strong>
-                  <span>從法規/內規出發，沿表單連到歷史資料，完成適用規則比對、表單對應與 VLM 判釋錨點建立。</span>
-                  <div class="subgraphs" aria-label="法規核心到歷史資料鏈">
-                    <div class="subgraph">法規/內規</div>
-                    <div class="subgraph">表單</div>
-                    <div class="subgraph">歷史資料</div>
-                  </div>
-                </div>
-
-                <div class="flow-card vlm">
-                  <strong>3. Context-Guided VLM 判讀</strong>
-                  <span>VLM 依注意錨點做全局判讀，並產生照片標記與 OBS 判釋資料。</span>
-                </div>
-
-                <div class="flow-card review">
-                  <strong>4. 人工查核</strong>
-                  <span>職安人員檢視 VLM 標註、照片證據與表單填寫內容。</span>
-                </div>
-
-                <div class="flow-card output">
-                  <strong>5. 輸出結果</strong>
-                  <span>標記後照片、Safety Alert Report（安全警示報告）、改善建議、已填查核表。</span>
-                </div>
-              </div>
+              <p class="summary-caption">新拍照片進入 Context-Guided VLM；三層 Graph 只建立判釋錨點，輸出標註後照片或新表單。</p>
             </div>
 
             <div class="flow-branch">
               <h3>流程 B：Graph 維護支線</h3>
-              <div class="vertical-flow" aria-label="圖譜維護流程">
-                <div class="flow-card maintain">
-                  <strong>1. 第一層：法規 / 內規異動</strong>
-                  <span>修法、法條新增，或確認法律/內規未更新。</span>
-                </div>
-
-                <div class="flow-card detect">
-                  <strong>2. 第二層：表單更新或新增</strong>
-                  <span>表單欄位更新、新版表單、表單內容建議或內規補充建議。</span>
-                </div>
-
-                <div class="flow-card crkg">
-                  <strong>3. 第三層：歷史資料勾稽</strong>
-                  <span>舊表單、舊查驗資料與新表單建立版本映射與可追溯關係。</span>
-                </div>
-
-                <div class="flow-card review">
-                  <strong>4. 人工審核</strong>
-                  <span>確認建議欄位、內規補充、版本映射是否納入正式 Graph。</span>
-                </div>
-
-                <div class="flow-card output">
-                  <strong>5. 更新 Graph</strong>
-                  <span>寫入新版法規/內規節點、表單欄位、歷史資料關聯與版本邊。</span>
-                </div>
-              </div>
+              <p class="summary-caption">法規/內規、表單與歷史資料可更新、新增與版本勾稽，避免舊資料失去對照關係。</p>
             </div>
-            <p class="summary-caption">流程 A 負責用照片完成判讀與填表；流程 B 負責讓法規/內規、表單與歷史資料可以更新、新增與版本勾稽。</p>
+            <a class="pill" href="#interactive-graph">查看互動架構圖</a>
           </div>
         </div>
       </aside>
     </div>
+
+    <section id="interactive-graph">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>互動 Graph 架構圖</h2>
+            <p>流程 A 與流程 B 都改成左側流程、右側圖示。點選左側步驟時，右側會高亮對應的 Graph 節點、VLM 模組或輸出結果，讓「流程」和「圖」能互相對照。</p>
+          </div>
+        </div>
+
+        <div class="interactive-stack">
+          <article class="interactive-arch" aria-label="流程 A：VLM 加圖譜判讀主流程">
+            <div class="interactive-head">
+              <div>
+                <h3>流程 A：VLM + 圖譜判讀主流程</h3>
+                <p>新拍照片進入 Context-Guided Visual Language Model（VLM，脈絡引導式視覺語言模型）看圖判讀；上方三層圖譜只負責建立判釋錨點，最後輸出標註後照片或新表單填寫內容。</p>
+              </div>
+              <span class="interaction-hint">點左側步驟看右側對應位置</span>
+            </div>
+            <div class="interactive-body">
+              <div class="flow-picker">
+                <button class="flow-step is-active" type="button" data-targets="a-input a-line-input" data-tone="blue" aria-pressed="true">
+                  <strong>1. 新拍照片輸入</strong>
+                  <span>照片與工程資料形成 Photo Package（照片資料包）。</span>
+                </button>
+                <button class="flow-step" type="button" data-targets="a-graph a-law a-form a-history a-line-anchor" data-tone="amber" aria-pressed="false">
+                  <strong>2. 圖譜建立判釋錨點</strong>
+                  <span>法規/內規 → 表單 → 歷史資料，整理 VLM 要注意的查核脈絡。</span>
+                </button>
+                <button class="flow-step" type="button" data-targets="a-vlm a-line-input a-line-anchor" data-tone="teal" aria-pressed="false">
+                  <strong>3. Context-Guided VLM 判讀</strong>
+                  <span>VLM 依錨點看全圖，產生照片標記與 OBS 判釋資料。</span>
+                </button>
+                <button class="flow-step" type="button" data-targets="a-review a-line-review" data-tone="red" aria-pressed="false">
+                  <strong>4. 人工查核</strong>
+                  <span>職安人員確認疑似違規、照片證據與填表內容。</span>
+                </button>
+                <button class="flow-step" type="button" data-targets="a-output-photo a-output-form a-line-photo a-line-form" data-tone="green" aria-pressed="false">
+                  <strong>5. 輸出結果</strong>
+                  <span>輸出標註後照片、Safety Alert（安全警示）報告與新表單。</span>
+                </button>
+              </div>
+
+              <div class="diagram-panel">
+                <div class="diagram-canvas" aria-label="流程 A 互動圖">
+                  <svg class="clean-svg" viewBox="0 0 760 500" role="img" aria-label="流程 A：上方三層圖譜建立錨點，下方 VLM 輸出標註照片與表單">
+                    <defs>
+                      <marker id="cleanArrowA" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                        <path d="M0,0 L0,7 L7,3.5 z" fill="#8ea1ad"></path>
+                      </marker>
+                    </defs>
+
+                    <text class="title" x="34" y="42">CRKG 作為 VLM 判釋錨點</text>
+                    <text class="small" x="34" y="64">法規/內規連到表單，再連到歷史資料；此圖譜只提供判讀脈絡，不直接取代 VLM 看圖。</text>
+
+                    <g data-key="a-graph">
+                      <circle class="guide-line" cx="356" cy="168" r="112"></circle>
+                      <circle class="guide-line" cx="356" cy="168" r="70"></circle>
+                    </g>
+
+                    <line class="line" data-line="a-line-anchor" x1="356" y1="282" x2="356" y2="332" marker-end="url(#cleanArrowA)"></line>
+                    <text class="small" x="372" y="312">建立判釋錨點</text>
+
+                    <g data-key="a-law">
+                      <circle class="halo" cx="356" cy="168" r="47"></circle>
+                      <circle class="node-shape" cx="356" cy="168" r="42" fill="#d7e8fb" stroke="#2166a5"></circle>
+                      <text class="node-label" x="356" y="162"><tspan x="356">法規</tspan><tspan x="356" dy="18">內規</tspan></text>
+                    </g>
+                    <g data-key="a-form">
+                      <circle class="halo" cx="252" cy="168" r="34"></circle>
+                      <circle class="node-shape" cx="252" cy="168" r="30" fill="#f7d7d7" stroke="#b23b3b"></circle>
+                      <text class="node-sub" x="252" y="163"><tspan x="252">表單</tspan><tspan x="252" dy="15">欄位</tspan></text>
+                      <circle class="halo" cx="460" cy="168" r="34"></circle>
+                      <circle class="node-shape" cx="460" cy="168" r="30" fill="#f7d7d7" stroke="#b23b3b"></circle>
+                      <text class="node-sub" x="460" y="163"><tspan x="460">填寫</tspan><tspan x="460" dy="15">規則</tspan></text>
+                    </g>
+                    <g data-key="a-history">
+                      <circle class="halo" cx="356" cy="82" r="32"></circle>
+                      <circle class="node-shape" cx="356" cy="82" r="28" fill="#f7dfb7" stroke="#a36200"></circle>
+                      <text class="node-sub" x="356" y="78"><tspan x="356">歷史</tspan><tspan x="356" dy="14">資料</tspan></text>
+                      <circle class="halo" cx="280" cy="246" r="32"></circle>
+                      <circle class="node-shape" cx="280" cy="246" r="28" fill="#f7dfb7" stroke="#a36200"></circle>
+                      <text class="node-sub" x="280" y="242"><tspan x="280">查驗</tspan><tspan x="280" dy="14">資料</tspan></text>
+                      <circle class="halo" cx="432" cy="246" r="32"></circle>
+                      <circle class="node-shape" cx="432" cy="246" r="28" fill="#f7dfb7" stroke="#a36200"></circle>
+                      <text class="node-sub" x="432" y="242"><tspan x="432">改善</tspan><tspan x="432" dy="14">資料</tspan></text>
+                    </g>
+
+                    <line class="line" x1="282" y1="168" x2="314" y2="168"></line>
+                    <line class="line" x1="398" y1="168" x2="430" y2="168"></line>
+                    <line class="line" x1="356" y1="110" x2="356" y2="126"></line>
+                    <line class="line" x1="310" y1="218" x2="292" y2="236"></line>
+                    <line class="line" x1="402" y1="218" x2="420" y2="236"></line>
+
+                    <g data-key="a-input">
+                      <circle class="halo" cx="108" cy="382" r="50"></circle>
+                      <circle class="node-shape" cx="108" cy="382" r="44" fill="#d7e8fb" stroke="#4b7aaa"></circle>
+                      <text class="node-label" x="108" y="377"><tspan x="108">新拍照片</tspan></text>
+                      <text class="node-sub" x="108" y="399">照片 + 工程資料</text>
+                    </g>
+                    <g data-key="a-vlm">
+                      <circle class="halo" cx="356" cy="382" r="62"></circle>
+                      <circle class="node-shape" cx="356" cy="382" r="56" fill="#ccece8" stroke="#0b7b75"></circle>
+                      <text class="node-label" x="356" y="373"><tspan x="356">Context-Guided</tspan><tspan x="356" dy="18">VLM</tspan></text>
+                      <text class="node-sub" x="356" y="415">OBS + 照片標記</text>
+                    </g>
+                    <g data-key="a-review">
+                      <rect class="node-shape" x="520" y="316" width="104" height="54" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
+                      <text class="node-label" x="572" y="340">人工查核</text>
+                      <text class="node-sub" x="572" y="358">確認疑似項目</text>
+                    </g>
+                    <g data-key="a-output-photo">
+                      <circle class="halo" cx="648" cy="334" r="43"></circle>
+                      <circle class="node-shape" cx="648" cy="334" r="38" fill="#e5ddf7" stroke="#6f55b5"></circle>
+                      <text class="node-label" x="648" y="329"><tspan x="648">標註後照片</tspan></text>
+                      <text class="node-sub" x="648" y="350">範圍 / 類型</text>
+                    </g>
+                    <g data-key="a-output-form">
+                      <circle class="halo" cx="648" cy="430" r="43"></circle>
+                      <circle class="node-shape" cx="648" cy="430" r="38" fill="#e5ddf7" stroke="#6f55b5"></circle>
+                      <text class="node-label" x="648" y="425"><tspan x="648">新表單</tspan></text>
+                      <text class="node-sub" x="648" y="446">填寫內容</text>
+                    </g>
+
+                    <line class="line" data-line="a-line-input" x1="152" y1="382" x2="300" y2="382" marker-end="url(#cleanArrowA)"></line>
+                    <path class="line" data-line="a-line-review" d="M410 372 C458 360 486 342 520 342" marker-end="url(#cleanArrowA)"></path>
+                    <path class="line" data-line="a-line-photo" d="M412 382 C500 380 546 336 610 334" marker-end="url(#cleanArrowA)"></path>
+                    <path class="line" data-line="a-line-form" d="M412 392 C500 402 546 430 610 430" marker-end="url(#cleanArrowA)"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="interactive-arch" id="flow-b" aria-label="流程 B：Graph 維護支線">
+            <div class="interactive-head">
+              <div>
+                <h3>流程 B：Graph 維護支線</h3>
+                <p>當法規/內規、表單或歷史資料需要更新時，Graph 透過版本邊保留舊資料可追溯性；新增情境則由法規核心往外推導表單欄位、內規建議與資料對應。</p>
+              </div>
+              <span class="interaction-hint">點左側步驟看右側對應位置</span>
+            </div>
+            <div class="interactive-body">
+              <div class="flow-picker">
+                <button class="flow-step is-active" type="button" data-targets="b-law b-case-law b-line-law" data-tone="amber" aria-pressed="true">
+                  <strong>1. 第一層：法規 / 內規異動</strong>
+                  <span>修法、新增法條，或確認法律/內規無更新。</span>
+                </button>
+                <button class="flow-step" type="button" data-targets="b-form b-case-form b-line-form" data-tone="teal" aria-pressed="false">
+                  <strong>2. 第二層：表單更新或新增</strong>
+                  <span>表單欄位更新、新版表單，或由新增法條產生表單內容建議。</span>
+                </button>
+                <button class="flow-step" type="button" data-targets="b-history b-case-history b-line-history" data-tone="blue" aria-pressed="false">
+                  <strong>3. 第三層：歷史資料勾稽</strong>
+                  <span>舊表單、舊查驗資料與新表單建立版本映射。</span>
+                </button>
+                <button class="flow-step" type="button" data-targets="b-review b-line-review" data-tone="red" aria-pressed="false">
+                  <strong>4. 人工審核</strong>
+                  <span>確認建議欄位、內規補充與版本映射是否納入正式 Graph。</span>
+                </button>
+                <button class="flow-step" type="button" data-targets="b-update b-line-update" data-tone="green" aria-pressed="false">
+                  <strong>5. 更新 Graph</strong>
+                  <span>寫入新版節點、表單欄位、歷史關聯與版本邊。</span>
+                </button>
+              </div>
+
+              <div class="diagram-panel">
+                <div class="diagram-canvas compact" aria-label="流程 B 互動圖">
+                  <svg class="clean-svg" viewBox="0 0 760 500" role="img" aria-label="流程 B：圖譜維護支線">
+                    <defs>
+                      <marker id="cleanArrowB" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                        <path d="M0,0 L0,7 L7,3.5 z" fill="#8ea1ad"></path>
+                      </marker>
+                    </defs>
+
+                    <text class="title" x="34" y="42">Graph 維護支線</text>
+                    <text class="small" x="34" y="64">更新不覆蓋舊資料；新增則由法規核心向外推導表單建議、內規補充與歷史資料對應。</text>
+
+                    <g data-key="b-case-law">
+                      <rect class="node-shape" x="52" y="104" width="138" height="60" rx="8" fill="#f7dfb7" stroke="#a36200"></rect>
+                      <text class="node-label" x="121" y="128">修法 / 新增法條</text>
+                      <text class="node-sub" x="121" y="148">或法律無更新</text>
+                    </g>
+
+                    <g data-key="b-law">
+                      <circle class="halo" cx="120" cy="246" r="54"></circle>
+                      <circle class="node-shape" cx="120" cy="246" r="48" fill="#d7e8fb" stroke="#2166a5"></circle>
+                      <text class="node-label" x="120" y="239"><tspan x="120">法規</tspan><tspan x="120" dy="18">內規</tspan></text>
+                      <text class="node-sub" x="120" y="277">第一層</text>
+                    </g>
+
+                    <g data-key="b-case-form">
+                      <rect class="node-shape" x="250" y="104" width="138" height="60" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
+                      <text class="node-label" x="319" y="128">表單內容建議</text>
+                      <text class="node-sub" x="319" y="148">欄位 / 填寫規則</text>
+                    </g>
+
+                    <g data-key="b-form">
+                      <circle class="halo" cx="320" cy="246" r="54"></circle>
+                      <circle class="node-shape" cx="320" cy="246" r="48" fill="#f7d7d7" stroke="#b23b3b"></circle>
+                      <text class="node-label" x="320" y="247">表單</text>
+                      <text class="node-sub" x="320" y="277">第二層</text>
+                    </g>
+
+                    <g data-key="b-case-history">
+                      <rect class="node-shape" x="250" y="364" width="138" height="60" rx="8" fill="#f7dfb7" stroke="#a36200"></rect>
+                      <text class="node-label" x="319" y="388">舊表單舊資料</text>
+                      <text class="node-sub" x="319" y="408">對應新表單</text>
+                    </g>
+
+                    <g data-key="b-history">
+                      <circle class="halo" cx="520" cy="246" r="54"></circle>
+                      <circle class="node-shape" cx="520" cy="246" r="48" fill="#f7dfb7" stroke="#a36200"></circle>
+                      <text class="node-label" x="520" y="247">歷史資料</text>
+                      <text class="node-sub" x="520" y="277">第三層</text>
+                    </g>
+
+                    <g data-key="b-review">
+                      <rect class="node-shape" x="584" y="104" width="118" height="60" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
+                      <text class="node-label" x="643" y="128">人工審核</text>
+                      <text class="node-sub" x="643" y="148">確認可納入</text>
+                    </g>
+
+                    <g data-key="b-update">
+                      <rect class="node-shape" x="584" y="364" width="118" height="60" rx="8" fill="#dcebdc" stroke="#3a7b45"></rect>
+                      <text class="node-label" x="643" y="388">更新 Graph</text>
+                      <text class="node-sub" x="643" y="408">版本邊 / 關聯邊</text>
+                    </g>
+
+                    <line class="line" data-line="b-line-law" x1="120" y1="164" x2="120" y2="198" marker-end="url(#cleanArrowB)"></line>
+                    <line class="line" data-line="b-line-form" x1="168" y1="246" x2="272" y2="246" marker-end="url(#cleanArrowB)"></line>
+                    <line class="line" data-line="b-line-history" x1="368" y1="246" x2="472" y2="246" marker-end="url(#cleanArrowB)"></line>
+                    <path class="line" data-line="b-line-review" d="M562 226 C602 204 626 176 638 164" marker-end="url(#cleanArrowB)"></path>
+                    <path class="line" data-line="b-line-update" d="M562 274 C602 304 626 344 638 364" marker-end="url(#cleanArrowB)"></path>
+                    <path class="guide-line" d="M520 294 C474 358 414 392 388 394"></path>
+                    <text class="small" x="408" y="370">版本映射</text>
+                    <path class="guide-line" d="M190 134 H250"></path>
+                    <path class="guide-line" d="M320 164 V198"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
     <section id="crkg">
       <div class="wrap">
@@ -1221,5 +1863,32 @@
       工地現場安全自動判釋系統架構提案。建議後續將法規條文、表單欄位與公司內規建立版本控管。
     </div>
   </footer>
+  <script>
+    document.querySelectorAll(".interactive-arch").forEach((arch) => {
+      const steps = [...arch.querySelectorAll(".flow-step")];
+      const targets = [...arch.querySelectorAll("[data-key]")];
+      const lines = [...arch.querySelectorAll("[data-line]")];
+
+      function activate(step) {
+        const keys = (step.dataset.targets || "").split(/\s+/).filter(Boolean);
+        steps.forEach((item) => {
+          const active = item === step;
+          item.classList.toggle("is-active", active);
+          item.setAttribute("aria-pressed", String(active));
+        });
+        targets.forEach((target) => {
+          target.classList.toggle("is-active", keys.includes(target.dataset.key));
+        });
+        lines.forEach((line) => {
+          line.classList.toggle("is-active", keys.includes(line.dataset.line));
+        });
+      }
+
+      steps.forEach((step) => {
+        step.addEventListener("click", () => activate(step));
+      });
+      if (steps[0]) activate(steps[0]);
+    });
+  </script>
 </body>
 </html>
