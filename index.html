@@ -90,6 +90,334 @@
       display: none;
     }
 
+    .intro-video {
+      padding: 30px 0;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .video-board {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.22fr);
+      gap: 26px;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .video-copy h1 {
+      font-size: clamp(28px, 3.5vw, 42px);
+      margin-bottom: 14px;
+    }
+
+    .video-copy p {
+      color: #3b4b57;
+      font-size: 17px;
+      margin-bottom: 18px;
+    }
+
+    .video-points {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .video-points li {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 9px;
+      align-items: start;
+      color: #40515e;
+      margin: 0;
+    }
+
+    .point-num {
+      display: inline-grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .motion-stage {
+      position: relative;
+      min-height: 390px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .motion-stage::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(#edf2f5 1px, transparent 1px),
+        linear-gradient(90deg, #edf2f5 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.55;
+    }
+
+    .motion-title {
+      position: absolute;
+      left: 22px;
+      top: 18px;
+      color: #526575;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      z-index: 2;
+    }
+
+    .motion-node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      min-width: 112px;
+      min-height: 58px;
+      border: 2.5px solid var(--blue);
+      border-radius: 8px;
+      background: #d7e8fb;
+      color: var(--ink);
+      text-align: center;
+      line-height: 1.25;
+      padding: 8px 10px;
+      z-index: 3;
+      box-shadow: 0 8px 18px rgba(24, 32, 39, 0.08);
+    }
+
+    .motion-node strong {
+      font-size: 14px;
+    }
+
+    .motion-node span {
+      display: block;
+      color: #526575;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .motion-node.photo { left: 7%; top: 54%; animation: stagePulse 8s ease-in-out infinite; }
+    .motion-node.vlm {
+      left: 40%;
+      top: 50%;
+      width: 138px;
+      height: 112px;
+      border-radius: 50%;
+      border-color: var(--teal);
+      background: #ccece8;
+      animation: vlmThink 8s ease-in-out infinite;
+    }
+    .motion-node.alert {
+      right: 7%;
+      top: 42%;
+      border-color: #6f55b5;
+      background: #e5ddf7;
+      animation: outputAppear 8s ease-in-out infinite;
+    }
+    .motion-node.form {
+      right: 7%;
+      top: 64%;
+      border-color: var(--red);
+      background: #f7d7d7;
+      animation: outputAppear 8s ease-in-out infinite;
+      animation-delay: 0.25s;
+    }
+
+    .mini-graph {
+      position: absolute;
+      left: 34%;
+      top: 12%;
+      width: 220px;
+      height: 135px;
+      z-index: 3;
+      animation: graphPulse 8s ease-in-out infinite;
+    }
+
+    .mini-graph-node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 74px;
+      height: 44px;
+      border-radius: 8px;
+      border: 2px solid var(--blue);
+      background: #d7e8fb;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.2;
+      z-index: 2;
+    }
+
+    .mini-graph-node.form {
+      left: 96px;
+      top: 48px;
+      border-color: var(--red);
+      background: #f7d7d7;
+    }
+
+    .mini-graph-node.content {
+      right: 0;
+      top: 48px;
+      border-color: var(--amber);
+      background: #f7dfb7;
+    }
+
+    .mini-graph-node.rule {
+      left: 0;
+      top: 48px;
+    }
+
+    .mini-graph-node.update {
+      left: 96px;
+      top: 0;
+      border-color: var(--green);
+      background: #dcebdc;
+      animation: updateBlink 8s ease-in-out infinite;
+    }
+
+    .motion-line {
+      position: absolute;
+      height: 3px;
+      background: #8ea1ad;
+      transform-origin: left center;
+      z-index: 1;
+      opacity: 0.72;
+    }
+
+    .motion-line::after {
+      content: "";
+      position: absolute;
+      right: -1px;
+      top: -4px;
+      border-left: 8px solid #8ea1ad;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+
+    .motion-line.photo-vlm {
+      left: 22%;
+      top: 65%;
+      width: 18%;
+      animation: lineDraw 8s ease-in-out infinite;
+    }
+
+    .motion-line.graph-vlm {
+      left: 48%;
+      top: 38%;
+      width: 18%;
+      transform: rotate(90deg);
+      animation: anchorDrop 8s ease-in-out infinite;
+    }
+
+    .motion-line.vlm-output {
+      left: 57%;
+      top: 60%;
+      width: 26%;
+      animation: lineDraw 8s ease-in-out infinite;
+      animation-delay: 0.8s;
+    }
+
+    .anchor-chip {
+      position: absolute;
+      left: 48%;
+      top: 39%;
+      transform: translateX(-50%);
+      border: 1px solid var(--teal);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 7px;
+      z-index: 4;
+      animation: chipPop 8s ease-in-out infinite;
+    }
+
+    .caption-strip {
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      z-index: 4;
+    }
+
+    .caption-card {
+      min-height: 54px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      padding: 8px 10px;
+      color: #40515e;
+      font-size: 12px;
+      line-height: 1.35;
+      animation: captionFocus 8s ease-in-out infinite;
+    }
+
+    .caption-card:nth-child(2) { animation-delay: 2.5s; }
+    .caption-card:nth-child(3) { animation-delay: 5s; }
+
+    @keyframes stagePulse {
+      0%, 100% { transform: scale(1); }
+      18%, 32% { transform: scale(1.06); box-shadow: 0 0 0 6px rgba(33, 102, 165, 0.14); }
+    }
+
+    @keyframes graphPulse {
+      0%, 12%, 100% { transform: translateY(0); opacity: 0.92; }
+      22%, 52% { transform: translateY(-4px); opacity: 1; filter: drop-shadow(0 8px 12px rgba(24, 32, 39, 0.12)); }
+    }
+
+    @keyframes vlmThink {
+      0%, 26%, 100% { transform: scale(1); }
+      36%, 58% { transform: scale(1.07); box-shadow: 0 0 0 8px rgba(11, 123, 117, 0.14); }
+    }
+
+    @keyframes outputAppear {
+      0%, 45% { opacity: 0.35; transform: translateX(10px); }
+      58%, 100% { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes updateBlink {
+      0%, 55%, 100% { transform: scale(1); }
+      66%, 82% { transform: scale(1.1); box-shadow: 0 0 0 5px rgba(58, 123, 69, 0.14); }
+    }
+
+    @keyframes lineDraw {
+      0%, 12% { transform: scaleX(0); opacity: 0; }
+      26%, 100% { transform: scaleX(1); opacity: 0.72; }
+    }
+
+    @keyframes anchorDrop {
+      0%, 25% { transform: rotate(90deg) scaleX(0); opacity: 0; }
+      38%, 100% { transform: rotate(90deg) scaleX(1); opacity: 0.72; }
+    }
+
+    @keyframes chipPop {
+      0%, 28% { opacity: 0; transform: translate(-50%, -6px); }
+      40%, 80% { opacity: 1; transform: translate(-50%, 0); }
+      100% { opacity: 0; transform: translate(-50%, -6px); }
+    }
+
+    @keyframes captionFocus {
+      0%, 100% { border-color: var(--line); box-shadow: none; }
+      8%, 28% { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(33, 102, 165, 0.12); }
+    }
+
     .intro {
       display: grid;
       grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
@@ -1096,6 +1424,7 @@
       nav { justify-content: flex-start; }
 
       .intro,
+      .video-board,
       .annotation-demo,
       .rules,
       .interactive-body {
@@ -1126,9 +1455,28 @@
       .grid-4,
       .flow,
       .data-map,
-      .maintenance-grid {
+      .maintenance-grid,
+      .caption-strip {
         grid-template-columns: 1fr;
       }
+
+      .motion-stage {
+        min-height: 560px;
+      }
+
+      .mini-graph {
+        left: 10%;
+        top: 12%;
+      }
+
+      .motion-node.photo { left: 9%; top: 42%; }
+      .motion-node.vlm { left: 48%; top: 39%; }
+      .motion-node.alert { left: 9%; right: auto; top: 61%; }
+      .motion-node.form { left: 54%; right: auto; top: 61%; }
+      .motion-line.photo-vlm { left: 28%; top: 50%; width: 20%; }
+      .motion-line.graph-vlm { left: 54%; top: 33%; }
+      .motion-line.vlm-output { left: 48%; top: 57%; width: 28%; transform: rotate(90deg); }
+      .caption-strip { bottom: 12px; }
 
       .data-card::after {
         content: "↓";
@@ -1149,6 +1497,24 @@
         font-size: 14px;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
+
+      .motion-node.alert,
+      .motion-node.form,
+      .anchor-chip,
+      .motion-line {
+        opacity: 1;
+        transform: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1159,6 +1525,7 @@
         <span>工地現場安全自動判釋系統架構提案</span>
       </div>
       <nav aria-label="頁面導覽">
+        <a href="#intro-video">介紹影片</a>
         <a href="#overview">總覽</a>
         <a href="#interactive-graph">互動架構</a>
         <a href="#flow-b">圖譜維護</a>
@@ -1169,6 +1536,48 @@
   </header>
 
   <main>
+    <section class="intro-video" id="intro-video" aria-label="系統主軸介紹影片">
+      <div class="wrap">
+        <div class="video-board">
+          <div class="video-copy">
+            <h1>讓 VLM 看懂工地，也看懂規則</h1>
+            <p>這套架構的核心很簡單：不是只把照片丟給模型，而是用可更新的 Graph 告訴 Visual Language Model（VLM，視覺語言模型）這張照片該看什麼、怎麼判斷、要填到哪裡。</p>
+            <ul class="video-points">
+              <li><span class="point-num">1</span><span>Graph 把法條/內規、表單、內容串起來，形成 VLM 的判釋錨點。</span></li>
+              <li><span class="point-num">2</span><span>VLM 依錨點看照片，抓出疑似違規範圍與重點觀察。</span></li>
+              <li><span class="point-num">3</span><span>Graph 可隨修法、表單新增與內容更新持續維護。</span></li>
+            </ul>
+          </div>
+
+          <div class="motion-stage" aria-label="VLM 與可更新 Graph 的介紹動畫">
+            <div class="motion-title">INTRO MOTION</div>
+            <div class="mini-graph" aria-hidden="true">
+              <div class="motion-line" style="left: 70px; top: 70px; width: 96px;"></div>
+              <div class="motion-line" style="left: 166px; top: 70px; width: 44px;"></div>
+              <div class="motion-line" style="left: 132px; top: 44px; width: 42px; transform: rotate(90deg);"></div>
+              <div class="mini-graph-node rule">法條<br>內規</div>
+              <div class="mini-graph-node form">表單</div>
+              <div class="mini-graph-node content">內容</div>
+              <div class="mini-graph-node update">可更新</div>
+            </div>
+            <div class="anchor-chip">判釋錨點</div>
+            <div class="motion-node photo"><strong>新拍照片</strong><span>照片 + 工程資料</span></div>
+            <div class="motion-line photo-vlm"></div>
+            <div class="motion-line graph-vlm"></div>
+            <div class="motion-node vlm"><strong>Context-Guided VLM</strong><span>依錨點看圖</span></div>
+            <div class="motion-line vlm-output"></div>
+            <div class="motion-node alert"><strong>標註照片</strong><span>抓出重點區域</span></div>
+            <div class="motion-node form"><strong>表單填寫</strong><span>對應欄位內容</span></div>
+            <div class="caption-strip">
+              <div class="caption-card">先從工地照片進入 VLM。</div>
+              <div class="caption-card">Graph 提供判斷脈絡，讓模型聚焦安全重點。</div>
+              <div class="caption-card">法條、表單、內容更新時，Graph 也能同步調整。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div class="wrap intro" id="overview">
       <div>
         <h1>以法規核心串接表單欄位與歷史資料的工地安全判釋架構</h1>
