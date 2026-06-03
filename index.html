@@ -425,6 +425,58 @@
       font-size: 12px;
     }
 
+    .maintenance-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .maintenance-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 16px;
+      min-height: 260px;
+    }
+
+    .maintenance-card h3 {
+      margin: 0 0 10px;
+    }
+
+    .branch-flow {
+      display: grid;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .branch-node {
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--blue);
+      border-radius: 7px;
+      padding: 9px 10px;
+      background: #fbfcfd;
+      color: #344652;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .branch-node.form { border-left-color: var(--red); }
+    .branch-node.history { border-left-color: var(--amber); }
+    .branch-node.suggest { border-left-color: var(--teal); }
+
+    .branch-arrow {
+      color: #718491;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .maintenance-card p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 10px 0 0;
+    }
+
     .annotation-demo {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
@@ -581,7 +633,8 @@
       .wrap { width: min(100% - 24px, 1180px); }
       .grid-4,
       .flow,
-      .data-map {
+      .data-map,
+      .maintenance-grid {
         grid-template-columns: 1fr;
       }
 
@@ -616,6 +669,7 @@
       <nav aria-label="頁面導覽">
         <a href="#overview">總覽</a>
         <a href="#crkg">營造法規知識圖譜</a>
+        <a href="#graph-maintenance">圖譜維護</a>
         <a href="#modules">模組</a>
         <a href="#data-format">資料格式</a>
       </nav>
@@ -839,6 +893,52 @@
             <text class="module-title" x="926" y="452">Output Generator</text>
             <text class="module-copy" x="926" y="471">報告 / 標註照片 / 表單</text>
           </svg>
+        </div>
+      </div>
+    </section>
+
+    <section id="graph-maintenance">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Graph 更新與新增支線</h2>
+            <p>除了照片判讀主流程，系統也需要維護法規/內規、表單與歷史資料之間的版本關係。更新時保留舊資料可追溯；新增時由 Graph 協助產生表單或內規建議。</p>
+          </div>
+        </div>
+        <div class="maintenance-grid">
+          <div class="maintenance-card">
+            <h3>情境 1：修法更新</h3>
+            <div class="branch-flow" aria-label="修法更新流程">
+              <div class="branch-node">第一層：原法律/內規修法</div>
+              <div class="branch-arrow">↓</div>
+              <div class="branch-node form">第二層：表單欄位更新</div>
+              <div class="branch-arrow">↓</div>
+              <div class="branch-node history">舊表單 / 舊資料與新表單勾稽</div>
+            </div>
+            <p>保留舊版法規、舊表單與舊查驗資料，新增版本映射關係，讓同一類查核結果可跨版本比較、追溯與轉換。</p>
+          </div>
+          <div class="maintenance-card">
+            <h3>情境 2：新增法條</h3>
+            <div class="branch-flow" aria-label="新增法條流程">
+              <div class="branch-node">第一層：法律/內規新增法條</div>
+              <div class="branch-arrow">↓</div>
+              <div class="branch-node suggest">第二層：表單內容建議</div>
+              <div class="branch-arrow">或</div>
+              <div class="branch-node suggest">第二層：內規補充建議</div>
+            </div>
+            <p>當第一層新增規範但尚未有表單欄位時，系統提出查核欄位、填寫規則或公司內規補充建議，交由人工審核後納入 Graph。</p>
+          </div>
+          <div class="maintenance-card">
+            <h3>情境 3：表單新增</h3>
+            <div class="branch-flow" aria-label="表單新增流程">
+              <div class="branch-node">第一層：法律/內規無更新</div>
+              <div class="branch-arrow">↓</div>
+              <div class="branch-node form">第二層：表單新增欄位或新版表單</div>
+              <div class="branch-arrow">↓</div>
+              <div class="branch-node history">建立與既有歷史資料的關聯</div>
+            </div>
+            <p>若只是表單新增，Graph 需記錄欄位來源、適用情境與既有資料對應，避免新欄位變成無法追溯的孤立資料。</p>
+          </div>
         </div>
       </div>
     </section>
