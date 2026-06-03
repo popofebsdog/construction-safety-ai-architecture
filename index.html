@@ -367,6 +367,64 @@
       gap: 18px;
     }
 
+    .data-map {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      align-items: stretch;
+      margin-bottom: 20px;
+    }
+
+    .data-card {
+      position: relative;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--blue);
+      border-radius: 8px;
+      background: #fff;
+      padding: 14px;
+      min-height: 140px;
+    }
+
+    .data-card::after {
+      content: "→";
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #718491;
+      font-weight: 800;
+      font-size: 18px;
+      z-index: 2;
+    }
+
+    .data-card:last-child::after { content: ""; }
+    .data-card.annotation { border-left-color: var(--red); }
+    .data-card.observation { border-left-color: var(--teal); }
+    .data-card.decision { border-left-color: var(--green); }
+
+    .data-card strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .data-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .data-card code {
+      display: inline-block;
+      margin-top: 10px;
+      color: #273640;
+      background: #eef3f6;
+      border-radius: 5px;
+      padding: 2px 6px;
+      font-size: 12px;
+    }
+
     .annotation-demo {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
@@ -522,8 +580,18 @@
     @media (max-width: 620px) {
       .wrap { width: min(100% - 24px, 1180px); }
       .grid-4,
-      .flow {
+      .flow,
+      .data-map {
         grid-template-columns: 1fr;
+      }
+
+      .data-card::after {
+        content: "↓";
+        right: auto;
+        left: 50%;
+        top: auto;
+        bottom: -20px;
+        transform: translateX(-50%);
       }
 
       .subgraphs {
@@ -894,6 +962,28 @@
           <div>
             <h2>資料格式範例</h2>
             <p>建議系統內部用 JSON 傳遞，使 Visual Language Model（VLM，視覺語言模型）觀察、法規判定與表單填寫可測試、可追蹤、可人工複核。</p>
+          </div>
+        </div>
+        <div class="data-map" aria-label="資料格式之間的關係">
+          <div class="data-card">
+            <strong>1. Attention Anchor</strong>
+            <p>由法規/內規、表單與歷史資料產生，告訴 VLM 這張照片要優先看什麼。</p>
+            <code>ANCHOR-001</code>
+          </div>
+          <div class="data-card annotation">
+            <strong>2. Photo Annotation</strong>
+            <p>VLM 依錨點在照片上標出 bbox / polygon，作為可回看的影像證據。</p>
+            <code>anchor_id → ANCHOR-001</code>
+          </div>
+          <div class="data-card observation">
+            <strong>3. Observation（OBS）</strong>
+            <p>把多個標記整理成一筆視覺觀察；OBS 只描述看見什麼，不直接判定違規。</p>
+            <code>linked_annotations → BOX-001, BOX-003</code>
+          </div>
+          <div class="data-card decision">
+            <strong>4. Violation Decision</strong>
+            <p>把 OBS、照片標記與法規/表單依據串起來，形成疑似違規、改善與填表內容。</p>
+            <code>source_observations → OBS-001</code>
           </div>
         </div>
         <div class="rules">
