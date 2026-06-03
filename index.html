@@ -1330,8 +1330,8 @@
 
                     <line class="line" data-line="a-line-input" x1="152" y1="382" x2="300" y2="382" marker-end="url(#cleanArrowA)"></line>
                     <path class="line" data-line="a-line-review" d="M412 382 H500" marker-end="url(#cleanArrowA)"></path>
-                    <path class="line" data-line="a-line-photo" d="M608 376 C638 368 650 342 654 330" marker-end="url(#cleanArrowA)"></path>
-                    <path class="line" data-line="a-line-form" d="M608 390 C638 402 650 426 654 438" marker-end="url(#cleanArrowA)"></path>
+                    <path class="line" data-line="a-line-photo" d="M608 374 C626 362 628 330 632 318" marker-end="url(#cleanArrowA)"></path>
+                    <path class="line" data-line="a-line-form" d="M608 392 C626 404 628 432 632 444" marker-end="url(#cleanArrowA)"></path>
                   </svg>
                 </div>
               </div>
@@ -1356,9 +1356,9 @@
                   <strong>情境 2：新增法條</strong>
                   <span>法律/內規新增法條 → 表單內容建議，或內規補充建議。</span>
                 </button>
-                <button class="flow-step" type="button" data-targets="b-newform-case b-newform-line b-newform-law b-newform-field b-newform-content b-core-law b-core-form" data-tone="green" aria-pressed="false">
+                <button class="flow-step" type="button" data-targets="b-newform-case b-newform-line b-newform-field b-newform-content b-newform-peer b-core-law b-core-form" data-tone="green" aria-pressed="false">
                   <strong>情境 3：表單新增</strong>
-                  <span>法律/內規無更新，但表單新增 → 表單內容新增。</span>
+                  <span>表單新增後，與第一層法規/內規及同層既有表單勾稽。</span>
                 </button>
               </div>
 
@@ -1366,8 +1366,8 @@
                 <div class="diagram-canvas compact" aria-label="流程 B 互動圖">
                   <svg class="clean-svg" viewBox="0 0 760 500" role="img" aria-label="流程 B：圖譜維護支線">
                     <defs>
-                      <marker id="cleanArrowB" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-                        <path d="M0,0 L0,7 L7,3.5 z" fill="#8ea1ad"></path>
+                      <marker id="cleanArrowB" markerWidth="5" markerHeight="5" refX="4.5" refY="2.5" orient="auto">
+                        <path d="M0,0 L0,5 L5,2.5 z" fill="#8ea1ad"></path>
                       </marker>
                     </defs>
 
@@ -1396,22 +1396,22 @@
                     <line class="line" x1="424" y1="245" x2="566" y2="245" marker-end="url(#cleanArrowB)"></line>
 
                     <g data-scenario data-key="b-update-case">
-                      <rect class="scenario-box" x="54" y="96" width="652" height="116" rx="10"></rect>
-                      <text class="scenario-title" x="72" y="124">情境 1：更新</text>
+                      <rect class="scenario-box" x="54" y="86" width="652" height="92" rx="10"></rect>
+                      <text class="scenario-title" x="72" y="112">情境 1：更新</text>
                       <g data-key="b-update-old">
-                        <rect class="node-shape" x="86" y="148" width="118" height="42" rx="8" fill="#eef3f6" stroke="#8ea1ad"></rect>
-                        <text class="node-sub" x="145" y="174">原法律/內規修法</text>
+                        <rect class="node-shape" x="86" y="130" width="118" height="36" rx="8" fill="#eef3f6" stroke="#8ea1ad"></rect>
+                        <text class="node-sub" x="145" y="153">原法律/內規修法</text>
                       </g>
                       <g data-key="b-update-new">
-                        <rect class="node-shape" x="304" y="148" width="112" height="42" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
-                        <text class="node-sub" x="360" y="174">表單更新</text>
+                        <rect class="node-shape" x="304" y="130" width="112" height="36" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
+                        <text class="node-sub" x="360" y="153">表單更新</text>
                       </g>
                       <g data-key="b-update-history">
-                        <rect class="node-shape" x="520" y="148" width="146" height="42" rx="8" fill="#f7dfb7" stroke="#a36200"></rect>
-                        <text class="node-sub" x="593" y="174">舊資料與新版勾稽</text>
+                        <rect class="node-shape" x="502" y="130" width="166" height="36" rx="8" fill="#f7dfb7" stroke="#a36200"></rect>
+                        <text class="node-sub" x="585" y="153">舊資料與新版表單勾稽</text>
                       </g>
-                      <line class="line" data-line="b-update-line" x1="204" y1="169" x2="304" y2="169" marker-end="url(#cleanArrowB)"></line>
-                      <line class="line" data-line="b-update-line" x1="416" y1="169" x2="520" y2="169" marker-end="url(#cleanArrowB)"></line>
+                      <line class="line" data-line="b-update-line" x1="204" y1="148" x2="304" y2="148" marker-end="url(#cleanArrowB)"></line>
+                      <line class="line" data-line="b-update-line" x1="416" y1="148" x2="502" y2="148" marker-end="url(#cleanArrowB)"></line>
                     </g>
 
                     <g data-scenario data-key="b-newlaw-case">
@@ -1436,20 +1436,23 @@
                     <g data-scenario data-key="b-newform-case">
                       <rect class="scenario-box" x="430" y="304" width="276" height="150" rx="10"></rect>
                       <text class="scenario-title" x="448" y="332">情境 3：表單新增</text>
-                      <g data-key="b-newform-law">
-                        <rect class="node-shape" x="452" y="360" width="98" height="44" rx="8" fill="#eef3f6" stroke="#8ea1ad"></rect>
-                        <text class="node-sub" x="501" y="378"><tspan x="501">法律/內規</tspan><tspan x="501" dy="14">無更新</tspan></text>
-                      </g>
                       <g data-key="b-newform-field">
-                        <rect class="node-shape" x="584" y="344" width="98" height="42" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
-                        <text class="node-sub" x="633" y="370">表單新增</text>
+                        <rect class="node-shape" x="548" y="344" width="106" height="42" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
+                        <text class="node-sub" x="601" y="370">表單新增</text>
                       </g>
                       <g data-key="b-newform-content">
-                        <rect class="node-shape" x="584" y="404" width="98" height="42" rx="8" fill="#dcebdc" stroke="#3a7b45"></rect>
-                        <text class="node-sub" x="633" y="430">內容新增</text>
+                        <rect class="node-shape" x="548" y="404" width="106" height="42" rx="8" fill="#dcebdc" stroke="#3a7b45"></rect>
+                        <text class="node-sub" x="601" y="430">內容新增</text>
                       </g>
-                      <path class="line" data-line="b-newform-line" d="M550 382 C570 374 576 365 584 365" marker-end="url(#cleanArrowB)"></path>
-                      <path class="line" data-line="b-newform-line" d="M633 386 V404" marker-end="url(#cleanArrowB)"></path>
+                      <g data-key="b-newform-peer">
+                        <rect class="node-shape" x="452" y="390" width="86" height="36" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
+                        <text class="node-sub" x="495" y="413">同層表單</text>
+                      </g>
+                      <path class="line" data-line="b-newform-line" d="M548 365 C508 352 480 334 462 312" marker-end="url(#cleanArrowB)"></path>
+                      <text class="small" x="458" y="344">勾稽法規</text>
+                      <path class="line" data-line="b-newform-line" d="M548 408 H538" marker-end="url(#cleanArrowB)"></path>
+                      <text class="small" x="462" y="382">勾稽同層</text>
+                      <path class="line" data-line="b-newform-line" d="M601 386 V404" marker-end="url(#cleanArrowB)"></path>
                     </g>
                   </svg>
                 </div>
