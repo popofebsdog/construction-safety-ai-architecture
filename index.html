@@ -1,0 +1,979 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>工地現場安全自動判釋系統架構</title>
+  <style>
+    :root {
+      --ink: #182027;
+      --muted: #607080;
+      --line: #d8e0e6;
+      --surface: #ffffff;
+      --surface-2: #f5f7f8;
+      --blue: #2166a5;
+      --teal: #0b7b75;
+      --amber: #a36200;
+      --red: #b23b3b;
+      --green: #3a7b45;
+      --shadow: 0 8px 24px rgba(24, 32, 39, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      line-height: 1.6;
+      background: var(--surface-2);
+    }
+
+    header {
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding: 18px 0;
+    }
+
+    .brand {
+      display: grid;
+      gap: 2px;
+    }
+
+    .brand strong {
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .brand span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    nav a {
+      color: var(--ink);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      border-color: var(--blue);
+      outline: none;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+      gap: 28px;
+      align-items: start;
+      padding: 34px 0 26px;
+    }
+
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.15;
+      margin: 0 0 16px;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin: 0 0 16px;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      font-size: 17px;
+      margin: 0 0 8px;
+      letter-spacing: 0;
+    }
+
+    p { margin: 0 0 12px; }
+
+    .lead {
+      color: #33434f;
+      font-size: 18px;
+      max-width: 760px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 6px;
+      padding: 5px 9px;
+      color: #354653;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-inner { padding: 20px; }
+
+    .vertical-flow {
+      display: grid;
+      gap: 10px;
+    }
+
+    .flow-card {
+      position: relative;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--blue);
+      border-radius: 8px;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .flow-card::after {
+      content: "↓";
+      position: absolute;
+      left: 50%;
+      bottom: -23px;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-weight: 700;
+      z-index: 2;
+    }
+
+    .flow-card:last-child::after,
+    .flow-card.output::after {
+      content: "";
+    }
+
+    .flow-card.detect { border-left-color: var(--teal); }
+    .flow-card.vlm { border-left-color: var(--teal); }
+    .flow-card.crkg { border-left-color: var(--amber); }
+    .flow-card.review { border-left-color: var(--red); }
+    .flow-card.output { border-left-color: var(--green); }
+
+    .flow-card strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .flow-card span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .subgraphs {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .subgraph {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 7px 6px;
+      background: #fbfcfd;
+      text-align: center;
+      color: #344652;
+      font-size: 12px;
+    }
+
+    .rule-layers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .rule-layers span {
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 3px 7px;
+      background: #fff;
+      color: #40515e;
+      font-size: 12px;
+    }
+
+    .summary-caption {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    section {
+      padding: 32px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 18px;
+    }
+
+    .section-head p {
+      max-width: 720px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .architecture {
+      overflow-x: auto;
+      padding: 8px;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      min-width: 920px;
+      height: auto;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .graph-tile {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      min-height: 220px;
+    }
+
+    .graph-tile .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 5px;
+      padding: 2px 7px;
+      color: #fff;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .tag.blue { background: var(--blue); }
+    .tag.teal { background: var(--teal); }
+    .tag.amber { background: var(--amber); }
+    .tag.red { background: var(--red); }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    li { margin: 5px 0; }
+
+    .module-table,
+    .contract-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 14px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: #eef3f6;
+      color: #273640;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .step {
+      position: relative;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      min-height: 150px;
+    }
+
+    .step-num {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .step p {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 6px 0 0;
+    }
+
+    .rules {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .annotation-demo {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .photo-stage {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      aspect-ratio: 16 / 10;
+    }
+
+    .photo-stage img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .mark {
+      position: absolute;
+      border: 3px solid currentColor;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .mark.red { color: #d03636; }
+    .mark.amber { color: #c47709; }
+    .mark.blue { color: #2166a5; }
+
+    .mark span {
+      position: absolute;
+      left: -3px;
+      top: -30px;
+      display: inline-flex;
+      min-height: 26px;
+      align-items: center;
+      padding: 3px 7px;
+      color: #fff;
+      border-radius: 5px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .mark.red span { background: #d03636; }
+    .mark.amber span { background: #c47709; }
+    .mark.blue span { background: #2166a5; }
+
+    .mark.poly {
+      border-style: dashed;
+      border-radius: 0;
+      clip-path: polygon(8% 18%, 96% 0, 92% 82%, 0 100%);
+    }
+
+    .legend-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .legend-list li {
+      display: grid;
+      grid-template-columns: 14px 1fr;
+      gap: 9px;
+      margin: 0;
+      color: #40515e;
+    }
+
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      margin-top: 5px;
+      background: var(--blue);
+    }
+
+    .swatch.red { background: #d03636; }
+    .swatch.amber { background: #c47709; }
+    .swatch.blue { background: #2166a5; }
+
+    code {
+      font-family: "SFMono-Regular", Consolas, monospace;
+      background: #edf1f3;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 0.92em;
+    }
+
+    pre {
+      margin: 0;
+      background: #14212b;
+      color: #e7edf1;
+      border-radius: 8px;
+      padding: 16px;
+      overflow: auto;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    pre code {
+      display: block;
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+      font-size: inherit;
+      white-space: pre;
+    }
+
+    .note {
+      border-left: 4px solid var(--amber);
+      background: #fff8ec;
+      padding: 14px 16px;
+      border-radius: 6px;
+      color: #4e3b1d;
+    }
+
+    footer {
+      padding: 28px 0 40px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .topbar,
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      nav { justify-content: flex-start; }
+
+      .intro,
+      .annotation-demo,
+      .rules {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .flow {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: 620px) {
+      .wrap { width: min(100% - 24px, 1180px); }
+      .grid-4,
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      .subgraphs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      th,
+      td {
+        padding: 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap topbar">
+      <div class="brand">
+        <strong>Construction Site Safety Assessment System</strong>
+        <span>工地現場安全自動判釋系統架構提案</span>
+      </div>
+      <nav aria-label="頁面導覽">
+        <a href="#overview">總覽</a>
+        <a href="#crkg">營造法規知識圖譜</a>
+        <a href="#modules">模組</a>
+        <a href="#data-format">資料格式</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap intro" id="overview">
+      <div>
+        <h1>以法規核心串接表單欄位與歷史資料的工地安全判釋架構</h1>
+        <p class="lead">系統以法規/內規為核心，將違規類型、改善措施、表單欄位與歷史查驗紀錄串成可追溯圖譜，再由頂層 Construction Regulation Knowledge Graph（CRKG，營造法規知識圖譜）串接，完成 Safety Alert（安全警示）、改善建議與自動填表。</p>
+        <div class="pill-row" aria-label="核心能力">
+          <span class="pill">照片輸入</span>
+          <span class="pill">違規範圍標記</span>
+          <span class="pill">Visual Language Model（VLM，視覺語言模型）觀察</span>
+          <span class="pill">多類別法規檢索</span>
+          <span class="pill">Safety Alert（安全警示）閾值判定</span>
+          <span class="pill">查核表自動填寫</span>
+        </div>
+      </div>
+
+      <aside class="panel" aria-label="架構摘要">
+        <div class="panel-inner">
+          <h2>上到下流程圖</h2>
+          <div class="vertical-flow" aria-label="傳統上到下系統流程圖">
+            <div class="flow-card input">
+              <strong>1. 照片與工程資料</strong>
+              <span>現場照片、工項、日期、施工階段、承包商。</span>
+            </div>
+
+            <div class="flow-card detect">
+              <strong>2. 圖譜檢索、法規比對與注意錨點</strong>
+              <span>從法規/內規出發，沿表單連到歷史資料，完成適用規則比對、表單對應與 VLM 判釋錨點建立。</span>
+              <div class="subgraphs" aria-label="法規核心到歷史資料鏈">
+                <div class="subgraph">法規/內規</div>
+                <div class="subgraph">表單</div>
+                <div class="subgraph">歷史資料</div>
+              </div>
+              <div class="rule-layers" aria-label="規則層級">
+                <span>國家法規</span>
+                <span>地方規定</span>
+                <span>工地內規</span>
+              </div>
+            </div>
+
+            <div class="flow-card vlm">
+              <strong>3. 脈絡引導式 Visual Language Model（VLM，視覺語言模型）判讀</strong>
+              <span>視覺語言模型依注意錨點做全圖判讀，並由 VLM grounding 產生疑似違規區域標記。</span>
+            </div>
+
+            <div class="flow-card review">
+              <strong>4. 人工查核</strong>
+              <span>由職安人員檢視 VLM 標註、照片證據與表單填寫內容，確認是否採納或修正。</span>
+            </div>
+
+            <div class="flow-card output">
+              <strong>5. 輸出結果</strong>
+              <span>標記後照片、Safety Alert Report（安全警示報告）、改善建議、已填查核表。</span>
+            </div>
+            <p class="summary-caption">第 2 步同時完成法規/內規、表單與歷史資料的圖譜檢索，建立 VLM 判釋錨點；VLM 負責看圖與標記，輸出端再產生標註照片與表單內容。</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section id="crkg">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>完整 Graph 示意圖</h2>
+            <p>整體主幹是一個三層法規脈絡圖：第一層是法規/內規，第二層是表單，第三層是歷史資料；這整個圖譜從上方連到 Visual Language Model（VLM，視覺語言模型），作為判斷錨點。主流程則是新拍照片進入 VLM，再輸出標註照片或新表單內容。</p>
+          </div>
+        </div>
+        <div class="architecture">
+          <svg viewBox="0 0 1180 700" role="img" aria-label="新拍照片輸入，中間 VLM 加法規圖譜判斷，右側輸出標註照片或表單">
+            <defs>
+              <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L9,3 z" fill="#6b7a86"></path>
+              </marker>
+              <style>
+                .title{font:700 16px -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif;fill:#182027}
+                .note{font:13px -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif;fill:#526575}
+                .label{font:700 15px -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif;fill:#182027;text-anchor:middle}
+                .sub{font:12px -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif;fill:#526575;text-anchor:middle}
+                .ring-label{font:700 13px -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif;fill:#526575;text-anchor:middle}
+                .legend-text{font:700 14px -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif;fill:#526575;text-anchor:start}
+                .module-box{fill:#fff;stroke:#cbd6dd;stroke-width:1.4}
+                .module-title{font:700 12px -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif;fill:#273640}
+                .module-copy{font:11px -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif;fill:#526575}
+                .edge{stroke:#718491;stroke-width:2.6;fill:none;marker-end:url(#arrow)}
+                .soft-edge{stroke:#5f7180;stroke-width:2.4;fill:none}
+                .ring{fill:none;stroke:#c7d2da;stroke-width:2.2;stroke-dasharray:8 7}
+                .core{fill:#cfe5fb;stroke:#2166a5;stroke-width:3.2}
+                .form{fill:#f7d7d7;stroke:#b23b3b;stroke-width:2.8}
+                .history{fill:#f7dfb7;stroke:#a36200;stroke-width:2.8}
+                .anchor{fill:#ccece8;stroke:#0b7b75;stroke-width:2.8}
+                .photo{fill:#d7e8fb;stroke:#4b7aaa;stroke-width:2.8}
+                .vlm{fill:#ccece8;stroke:#0b7b75;stroke-width:2.8}
+                .output{fill:#e5ddf7;stroke:#6f55b5;stroke-width:2.8}
+                .edge-label{font:12px -apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC',sans-serif;fill:#607080;text-anchor:middle}
+              </style>
+            </defs>
+
+            <text class="title" x="64" y="66">Construction Regulation Knowledge Graph（CRKG，營造法規知識圖譜）</text>
+            <text class="note" x="64" y="90">主流程是新拍照片進入 VLM 看圖判讀，再輸出標註後照片或新表單；上方三層圖譜只負責建立 VLM 的判釋錨點。</text>
+
+            <rect class="module-box" x="84" y="420" width="185" height="66" rx="7"></rect>
+            <text class="module-title" x="100" y="442">Input Layer</text>
+            <text class="module-copy" x="100" y="461">照片 + 工程資料</text>
+            <text class="module-copy" x="100" y="477">輸出照片資料包</text>
+
+            <circle class="ring" cx="590" cy="300" r="150"></circle>
+            <circle class="ring" cx="590" cy="300" r="98"></circle>
+
+            <rect class="module-box" x="270" y="130" width="205" height="66" rx="7"></rect>
+            <text class="module-title" x="286" y="152">Context Retrieval</text>
+            <text class="module-copy" x="286" y="171">檢索法規、表單、歷史資料</text>
+            <text class="module-copy" x="286" y="187">輸出判釋錨點</text>
+
+            <path class="soft-edge" d="M544 300 H520"></path>
+            <path class="soft-edge" d="M636 300 H660"></path>
+            <path class="soft-edge" d="M590 254 V230"></path>
+            <path class="soft-edge" d="M590 202 V176"></path>
+            <path class="soft-edge" d="M492 300 C474 322 462 342 455 365"></path>
+            <path class="soft-edge" d="M688 300 C706 322 718 342 725 365"></path>
+
+            <circle class="core" cx="590" cy="300" r="46"></circle>
+            <text class="label" x="590" y="293">
+              <tspan x="590" dy="0">法規</tspan>
+              <tspan x="590" dy="19">內規</tspan>
+            </text>
+
+            <circle class="form" cx="492" cy="300" r="28"></circle>
+            <text class="sub" x="492" y="296">
+              <tspan x="492" dy="0">表單</tspan>
+              <tspan x="492" dy="16">欄位</tspan>
+            </text>
+            <circle class="form" cx="688" cy="300" r="28"></circle>
+            <text class="sub" x="688" y="296">
+              <tspan x="688" dy="0">填寫</tspan>
+              <tspan x="688" dy="16">規則</tspan>
+            </text>
+            <circle class="form" cx="590" cy="202" r="28"></circle>
+            <text class="sub" x="590" y="198">
+              <tspan x="590" dy="0">查核</tspan>
+              <tspan x="590" dy="16">表單</tspan>
+            </text>
+
+            <circle class="history" cx="590" cy="150" r="26"></circle>
+            <text class="sub" x="590" y="146">
+              <tspan x="590" dy="0">歷史</tspan>
+              <tspan x="590" dy="15">資料</tspan>
+            </text>
+            <circle class="history" cx="455" cy="365" r="26"></circle>
+            <text class="sub" x="455" y="361">
+              <tspan x="455" dy="0">查驗</tspan>
+              <tspan x="455" dy="15">資料</tspan>
+            </text>
+            <circle class="history" cx="725" cy="365" r="26"></circle>
+            <text class="sub" x="725" y="361">
+              <tspan x="725" dy="0">改善</tspan>
+              <tspan x="725" dy="15">資料</tspan>
+            </text>
+
+            <circle class="core" cx="820" cy="206" r="8"></circle>
+            <text class="legend-text" x="852" y="211">第一層：法規 / 內規</text>
+            <circle class="form" cx="820" cy="256" r="8"></circle>
+            <text class="legend-text" x="852" y="261">第二層：表單</text>
+            <circle class="history" cx="820" cy="306" r="8"></circle>
+            <text class="legend-text" x="852" y="311">第三層：歷史資料</text>
+
+            <text class="ring-label" x="165" y="500">INPUT</text>
+            <circle class="photo" cx="165" cy="590" r="42"></circle>
+            <text class="label" x="165" y="579">
+              <tspan x="165" dy="0">新拍</tspan>
+              <tspan x="165" dy="19">照片</tspan>
+            </text>
+            <text class="sub" x="165" y="620">
+              <tspan x="165" dy="0">工程資料</tspan>
+            </text>
+
+            <circle class="vlm" cx="590" cy="590" r="46"></circle>
+            <text class="label" x="590" y="579">
+              <tspan x="590" dy="0">VLM</tspan>
+              <tspan x="590" dy="19">判讀</tspan>
+            </text>
+            <text class="sub" x="590" y="620">
+              <tspan x="590" dy="0">OBS + 標記</tspan>
+            </text>
+
+            <rect class="module-box" x="610" y="508" width="170" height="48" rx="7"></rect>
+            <text class="module-title" x="626" y="530">Context-Guided VLM</text>
+            <text class="module-copy" x="626" y="548">依錨點看圖判讀</text>
+
+            <text class="ring-label" x="1015" y="500">OUTPUT</text>
+            <circle class="output" cx="1015" cy="540" r="40"></circle>
+            <text class="label" x="1015" y="532">
+              <tspan x="1015" dy="0">標註後</tspan>
+              <tspan x="1015" dy="18">照片</tspan>
+            </text>
+            <circle class="output" cx="1015" cy="640" r="40"></circle>
+            <text class="label" x="1015" y="632">
+              <tspan x="1015" dy="0">新表單</tspan>
+              <tspan x="1015" dy="18">填寫</tspan>
+            </text>
+
+            <path class="edge" d="M207 590 H544"></path>
+            <path class="edge" d="M590 450 V544"></path>
+            <path class="edge" d="M636 590 C760 590 850 540 975 540"></path>
+            <path class="edge" d="M636 590 C760 590 850 640 975 640"></path>
+            <text class="edge-label" x="370" y="574">輸入照片</text>
+            <text class="edge-label" x="634" y="504">建立判釋錨點</text>
+            <text class="edge-label" x="842" y="542">標記範圍/類型</text>
+            <text class="edge-label" x="842" y="644">填入表單欄位</text>
+
+            <rect class="module-box" x="720" y="456" width="185" height="66" rx="7"></rect>
+            <text class="module-title" x="736" y="478">Rule Eval / 人工查核</text>
+            <text class="module-copy" x="736" y="497">疑似違規、查核項目</text>
+            <text class="module-copy" x="736" y="513">輸出查核狀態</text>
+            <rect class="module-box" x="910" y="430" width="190" height="58" rx="7"></rect>
+            <text class="module-title" x="926" y="452">Output Generator</text>
+            <text class="module-copy" x="926" y="471">報告 / 標註照片 / 表單</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section id="modules">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>模組職責與輸出</h2>
+            <p>表格保留完整模組說明；上方 Graph 示意圖只呈現各模組在流程中的位置與主要輸出。</p>
+          </div>
+        </div>
+        <table class="module-table">
+          <thead>
+            <tr>
+              <th>模組</th>
+              <th>主要職責</th>
+              <th>輸入</th>
+              <th>輸出</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Input Layer</td>
+              <td>接收照片、工程元資料與任務設定。</td>
+              <td>照片、工地名稱、工項、日期、施工階段。</td>
+              <td>Photo Package（照片資料包）。</td>
+            </tr>
+            <tr>
+              <td>Context Retriever<br>脈絡檢索器</td>
+              <td>從法規/內規出發，經由表單欄位連到歷史資料，建立 VLM 判釋錨點。</td>
+              <td>Photo Package（照片資料包）、工程元資料、法規/表單/歷史資料圖譜。</td>
+              <td>Attention Anchors（注意錨點）、Context Checklist（脈絡查核清單）。</td>
+            </tr>
+            <tr>
+              <td>Context-Guided VLM<br>脈絡引導式視覺語言判讀</td>
+              <td>依注意錨點做全圖判讀，並由 VLM grounding 產生疑似違規區域標記。</td>
+              <td>Photo Package（照片資料包）、Attention Anchors（注意錨點）。</td>
+              <td>Observation List（結構化觀察清單）、Photo Annotations（照片標記資料）。</td>
+            </tr>
+            <tr>
+              <td>Rule Evaluation + 人工查核</td>
+              <td>依圖譜規則整理疑似違規、改善建議與需人工確認的查核項目。</td>
+              <td>Observation List（結構化觀察清單）、照片標記、法規/表單/歷史資料圖譜。</td>
+              <td>Violation Decisions（違規判定清單）、人工查核狀態。</td>
+            </tr>
+            <tr>
+              <td>Output Generator<br>輸出產生器</td>
+              <td>產生安全報告、標記後照片、改善建議與表單填寫內容。</td>
+              <td>Violation Decisions（違規判定清單）、Form Field Layer（表單欄位層）。</td>
+              <td>PDF / JSON / 標註照片 / 已填寫表單。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>照片標記輸出設計</h2>
+            <p>每個違規判定都應能回指到照片上的證據範圍。照片標記由 Visual Language Model grounding（視覺語言模型定位）依注意錨點產生。</p>
+          </div>
+        </div>
+        <div class="annotation-demo" style="margin-bottom: 18px;">
+          <div class="photo-stage" aria-label="標記後照片示意">
+            <img src="assets/sample_scaffold.jpg" alt="台灣施工架照片標記示意">
+            <div class="mark red" style="left: 16%; top: 18%; width: 16%; height: 24%;">
+              <span>BOX-001 疑似未戴安全帽</span>
+            </div>
+            <div class="mark amber" style="left: 40%; top: 20%; width: 14%; height: 23%;">
+              <span>BOX-002 高處作業</span>
+            </div>
+            <div class="mark red" style="left: 30%; top: 60%; width: 15%; height: 32%;">
+              <span>BOX-003 疑似未戴安全帽</span>
+            </div>
+            <div class="mark blue poly" style="left: 8%; top: 34%; width: 52%; height: 14%;">
+              <span>POLY-001 施工架平台</span>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-inner">
+              <h3>標記結果如何進入判釋</h3>
+              <ul class="legend-list">
+                <li><span class="swatch red"></span><span>法規節點連到「安全帽」查核欄位，該欄位的歷史資料提示過往查核重點，VLM 因此產生 <code>BOX-001</code>、<code>BOX-003</code> 作為疑似個人防護具證據。</span></li>
+                <li><span class="swatch amber"></span><span>工項脈絡提示「施工架作業」，VLM 標示 <code>BOX-002</code> 供高處作業規則判定。</span></li>
+                <li><span class="swatch blue"></span><span>法規節點對應的表單欄位提示需查核平台/護欄，VLM 標示 <code>POLY-001</code> 檢查踏板與臨邊風險。</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="rules">
+          <div class="panel">
+            <div class="panel-inner">
+              <h3>標記圖層</h3>
+              <ul>
+                <li><code>bbox</code>（bounding box，矩形框）：人員、安全帽、反光背心、機具。</li>
+                <li><code>polygon</code>（多邊形區域）：開口、臨邊、施工架平台、危險區域。</li>
+                <li><code>label</code>：疑似違規類型、標註範圍與人工查核狀態。</li>
+                <li><code>link</code>：標記範圍連到 Observation（OBS，結構化觀察）與 Violation Decision（違規判定）。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-inner">
+              <h3>標記產生方式</h3>
+              <ul>
+                <li>法規/內規 → 表單欄位 → 歷史查驗紀錄檢索：產生應注意項目與提示詞。</li>
+                <li>Visual Language Model grounding（視覺語言模型定位）：依脈絡錨點產生 bounding box / polygon 與標籤。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="data-format">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>資料格式範例</h2>
+            <p>建議系統內部用 JSON 傳遞，使 Visual Language Model（VLM，視覺語言模型）觀察、法規判定與表單填寫可測試、可追蹤、可人工複核。</p>
+          </div>
+        </div>
+        <div class="rules">
+          <div>
+            <h3>Attention Anchor（注意錨點）</h3>
+            <pre><code>{
+  "id": "ANCHOR-001",
+  "photo_id": "IMG-20260528-001",
+  "source": ["Regulation Graph", "Form Field", "Historical Inspection Record"],
+  "work_item": "施工架作業",
+  "focus": "高處作業人員是否具備個人防護具與防墜措施",
+  "checklist_fields": ["安全帽", "安全帶", "護欄", "踏板完整性"],
+  "similar_cases": ["CASE-2025-0412", "CASE-2025-1020"],
+  "prompt_hint": "請優先檢查施工架平台、臨邊與作業人員頭部/腰部防護。"
+}</code></pre>
+          </div>
+          <div>
+            <h3>Photo Annotation（VLM 產生的照片標記資料）</h3>
+            <pre><code>{
+  "id": "BOX-001",
+  "photo_id": "IMG-20260528-001",
+  "geometry_type": "bbox",
+  "coordinates": {
+    "x": 0.62,
+    "y": 0.18,
+    "width": 0.16,
+    "height": 0.28
+  },
+  "object_type": "person",
+  "violation_type_hint": "疑似未配戴安全帽",
+  "review_status": "待人工查核",
+  "visual_style": {
+    "label": "疑似未戴安全帽",
+    "color": "red"
+  }
+}</code></pre>
+          </div>
+          <div>
+            <h3>Observation（OBS，結構化觀察）</h3>
+            <pre><code>{
+  "id": "OBS-001",
+  "photo_id": "IMG-20260528-001",
+  "description": "鷹架上方作業人員疑似未配戴安全帽",
+  "location": "影像右上方，鷹架第三層",
+  "linked_annotations": ["BOX-001"],
+  "category_hint": ["PPE", "高處作業", "施工架"],
+  "review_status": "待人工查核",
+  "review_note": "頭部局部被鋼管遮蔽，需由職安人員確認"
+}</code></pre>
+          </div>
+        </div>
+        <div style="margin-top: 18px;">
+          <h3>Violation Decision（違規判定資料）</h3>
+          <pre><code>{
+  "id": "VIOLATION-001",
+  "source_observation": "OBS-001",
+  "evidence_annotations": ["BOX-001"],
+  "status": "疑似不符合",
+  "severity": "B",
+  "matched_rules": ["REG-HEIGHT-PPE-001"],
+  "improvements": ["補拍近景確認安全帽"],
+  "form_bindings": [
+    {
+      "form": "工地安全查核表",
+      "field": "個人防護具.安全帽.F03",
+      "value": "疑似未配戴安全帽，需人工複核"
+    }
+  ],
+  "requires_human_review": true
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      工地現場安全自動判釋系統架構提案。建議後續將法規條文、表單欄位與公司內規建立版本控管。
+    </div>
+  </footer>
+</body>
+</html>
