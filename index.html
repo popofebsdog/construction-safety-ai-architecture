@@ -154,6 +154,23 @@
       gap: 10px;
     }
 
+    .flow-branches {
+      display: grid;
+      gap: 16px;
+    }
+
+    .flow-branch {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 14px;
+    }
+
+    .flow-branch h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
     .flow-card {
       position: relative;
       border: 1px solid var(--line);
@@ -184,6 +201,8 @@
     .flow-card.crkg { border-left-color: var(--amber); }
     .flow-card.review { border-left-color: var(--red); }
     .flow-card.output { border-left-color: var(--green); }
+    .flow-card.maintain { border-left-color: var(--amber); }
+    .flow-card.suggest { border-left-color: var(--teal); }
 
     .flow-card strong {
       display: block;
@@ -694,42 +713,72 @@
       <aside class="panel" aria-label="架構摘要">
         <div class="panel-inner">
           <h2>上到下流程圖</h2>
-          <div class="vertical-flow" aria-label="傳統上到下系統流程圖">
-            <div class="flow-card input">
-              <strong>1. 照片與工程資料</strong>
-              <span>現場照片、工項、日期、施工階段、承包商。</span>
-            </div>
+          <div class="flow-branches" aria-label="兩種上到下流程圖">
+            <div class="flow-branch">
+              <h3>流程 A：VLM + 圖譜判讀主流程</h3>
+              <div class="vertical-flow" aria-label="VLM 加圖譜判讀流程">
+                <div class="flow-card input">
+                  <strong>1. 照片與工程資料</strong>
+                  <span>現場照片、工項、日期、施工階段、承包商。</span>
+                </div>
 
-            <div class="flow-card detect">
-              <strong>2. 圖譜檢索、法規比對與注意錨點</strong>
-              <span>從法規/內規出發，沿表單連到歷史資料，完成適用規則比對、表單對應與 VLM 判釋錨點建立。</span>
-              <div class="subgraphs" aria-label="法規核心到歷史資料鏈">
-                <div class="subgraph">法規/內規</div>
-                <div class="subgraph">表單</div>
-                <div class="subgraph">歷史資料</div>
+                <div class="flow-card detect">
+                  <strong>2. 圖譜檢索、法規比對與注意錨點</strong>
+                  <span>從法規/內規出發，沿表單連到歷史資料，完成適用規則比對、表單對應與 VLM 判釋錨點建立。</span>
+                  <div class="subgraphs" aria-label="法規核心到歷史資料鏈">
+                    <div class="subgraph">法規/內規</div>
+                    <div class="subgraph">表單</div>
+                    <div class="subgraph">歷史資料</div>
+                  </div>
+                </div>
+
+                <div class="flow-card vlm">
+                  <strong>3. Context-Guided VLM 判讀</strong>
+                  <span>VLM 依注意錨點做全局判讀，並產生照片標記與 OBS 判釋資料。</span>
+                </div>
+
+                <div class="flow-card review">
+                  <strong>4. 人工查核</strong>
+                  <span>職安人員檢視 VLM 標註、照片證據與表單填寫內容。</span>
+                </div>
+
+                <div class="flow-card output">
+                  <strong>5. 輸出結果</strong>
+                  <span>標記後照片、Safety Alert Report（安全警示報告）、改善建議、已填查核表。</span>
+                </div>
               </div>
-              <div class="rule-layers" aria-label="規則層級">
-                <span>國家法規</span>
-                <span>地方規定</span>
-                <span>工地內規</span>
+            </div>
+
+            <div class="flow-branch">
+              <h3>流程 B：Graph 維護支線</h3>
+              <div class="vertical-flow" aria-label="圖譜維護流程">
+                <div class="flow-card maintain">
+                  <strong>1. 第一層：法規 / 內規異動</strong>
+                  <span>修法、法條新增，或確認法律/內規未更新。</span>
+                </div>
+
+                <div class="flow-card detect">
+                  <strong>2. 第二層：表單更新或新增</strong>
+                  <span>表單欄位更新、新版表單、表單內容建議或內規補充建議。</span>
+                </div>
+
+                <div class="flow-card crkg">
+                  <strong>3. 第三層：歷史資料勾稽</strong>
+                  <span>舊表單、舊查驗資料與新表單建立版本映射與可追溯關係。</span>
+                </div>
+
+                <div class="flow-card review">
+                  <strong>4. 人工審核</strong>
+                  <span>確認建議欄位、內規補充、版本映射是否納入正式 Graph。</span>
+                </div>
+
+                <div class="flow-card output">
+                  <strong>5. 更新 Graph</strong>
+                  <span>寫入新版法規/內規節點、表單欄位、歷史資料關聯與版本邊。</span>
+                </div>
               </div>
             </div>
-
-            <div class="flow-card vlm">
-              <strong>3. 脈絡引導式 Visual Language Model（VLM，視覺語言模型）判讀</strong>
-              <span>視覺語言模型依注意錨點做全圖判讀，並由 VLM grounding 產生疑似違規區域標記。</span>
-            </div>
-
-            <div class="flow-card review">
-              <strong>4. 人工查核</strong>
-              <span>由職安人員檢視 VLM 標註、照片證據與表單填寫內容，確認是否採納或修正。</span>
-            </div>
-
-            <div class="flow-card output">
-              <strong>5. 輸出結果</strong>
-              <span>標記後照片、Safety Alert Report（安全警示報告）、改善建議、已填查核表。</span>
-            </div>
-            <p class="summary-caption">第 2 步同時完成法規/內規、表單與歷史資料的圖譜檢索，建立 VLM 判釋錨點；VLM 負責看圖與標記，輸出端再產生標註照片與表單內容。</p>
+            <p class="summary-caption">流程 A 負責用照片完成判讀與填表；流程 B 負責讓法規/內規、表單與歷史資料可以更新、新增與版本勾稽。</p>
           </div>
         </div>
       </aside>
