@@ -976,8 +976,8 @@
             <code>anchor_id → ANCHOR-001</code>
           </div>
           <div class="data-card observation">
-            <strong>3. Observation（OBS）</strong>
-            <p>把多個標記整理成一筆視覺觀察；OBS 只描述看見什麼，不直接判定違規。</p>
+            <strong>3. VLM 產生的判釋資料（OBS）</strong>
+            <p>VLM 看全局後整理出的判讀資料；描述看見什麼，不直接作最終違規結論。</p>
             <code>linked_annotations → BOX-001, BOX-003</code>
           </div>
           <div class="data-card decision">
@@ -1024,12 +1024,12 @@
 }</code></pre>
           </div>
           <div>
-            <h3>Observation（OBS，結構化觀察）</h3>
+            <h3>VLM 產生的判釋資料（OBS）</h3>
             <pre><code>{
   "id": "OBS-001",
   "photo_id": "IMG-20260528-001",
   "anchor_id": "ANCHOR-001",
-  "observation_type": "visual_observation",
+  "observation_type": "vlm_scene_interpretation",
   "description": "施工架上有作業人員疑似未配戴安全帽",
   "location": "影像上方與下方施工架作業區",
   "linked_annotations": ["BOX-001", "BOX-003"],
