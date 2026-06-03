@@ -698,6 +698,28 @@
       transition: opacity 0.16s ease;
     }
 
+    .clean-svg [data-scenario] {
+      opacity: 0.28;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      transform-origin: center;
+    }
+
+    .clean-svg [data-scenario].is-active {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+
+    .clean-svg .scenario-title {
+      font: 700 13px -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      fill: var(--ink);
+    }
+
+    .clean-svg .scenario-box {
+      fill: #fff;
+      stroke: #cbd6dd;
+      stroke-width: 1.4;
+    }
+
     .diagram-lines {
       position: absolute;
       inset: 0;
@@ -1167,7 +1189,7 @@
           <div class="flow-branches" aria-label="展示板重點">
             <div class="flow-branch">
               <h3>流程 A：VLM + 圖譜判讀主流程</h3>
-              <p class="summary-caption">新拍照片進入 Context-Guided VLM；三層 Graph 只建立判釋錨點，輸出標註後照片或新表單。</p>
+              <p class="summary-caption">新拍照片進入 Context-Guided VLM；三層 Graph 只建立判釋錨點，人工查核後輸出標註照片或表單填寫。</p>
             </div>
 
             <div class="flow-branch">
@@ -1185,7 +1207,7 @@
         <div class="section-head">
           <div>
             <h2>互動 Graph 架構圖</h2>
-            <p>流程 A 與流程 B 都改成左側流程、右側圖示。點選左側步驟時，右側會高亮對應的 Graph 節點、VLM 模組或輸出結果，讓「流程」和「圖」能互相對照。</p>
+            <p>流程 A 呈現照片判讀主幹；流程 B 呈現 Graph 在三種更新/新增情境下的變化。點選左側項目時，右側圖會展開對應節點與關係。</p>
           </div>
         </div>
 
@@ -1194,7 +1216,7 @@
             <div class="interactive-head">
               <div>
                 <h3>流程 A：VLM + 圖譜判讀主流程</h3>
-                <p>新拍照片進入 Context-Guided Visual Language Model（VLM，脈絡引導式視覺語言模型）看圖判讀；上方三層圖譜只負責建立判釋錨點，最後輸出標註後照片或新表單填寫內容。</p>
+                <p>新拍照片進入 Context-Guided Visual Language Model（VLM，脈絡引導式視覺語言模型）看圖判讀；上方三層圖譜只負責建立判釋錨點，人工查核後輸出標註後照片或表單填寫內容。</p>
               </div>
               <span class="interaction-hint">點左側步驟看右側對應位置</span>
             </div>
@@ -1218,7 +1240,7 @@
                 </button>
                 <button class="flow-step" type="button" data-targets="a-output-photo a-output-form a-line-photo a-line-form" data-tone="green" aria-pressed="false">
                   <strong>5. 輸出結果</strong>
-                  <span>輸出標註後照片、Safety Alert（安全警示）報告與新表單。</span>
+                  <span>輸出標註後照片、Safety Alert（安全警示）報告與表單填寫。</span>
                 </button>
               </div>
 
@@ -1232,7 +1254,10 @@
                     </defs>
 
                     <text class="title" x="34" y="42">CRKG 作為 VLM 判釋錨點</text>
-                    <text class="small" x="34" y="64">法規/內規連到表單，再連到歷史資料；此圖譜只提供判讀脈絡，不直接取代 VLM 看圖。</text>
+                    <text class="small" x="34" y="64">
+                      <tspan x="34">法規/內規連到表單，再連到歷史資料；</tspan>
+                      <tspan x="34" dy="16">圖譜提供判讀脈絡，不直接取代 VLM 看圖。</tspan>
+                    </text>
 
                     <g data-key="a-graph">
                       <circle class="guide-line" cx="356" cy="168" r="112"></circle>
@@ -1286,27 +1311,27 @@
                       <text class="node-sub" x="356" y="415">OBS + 照片標記</text>
                     </g>
                     <g data-key="a-review">
-                      <rect class="node-shape" x="520" y="316" width="104" height="54" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
-                      <text class="node-label" x="572" y="340">人工查核</text>
-                      <text class="node-sub" x="572" y="358">確認疑似項目</text>
+                      <rect class="node-shape" x="500" y="352" width="108" height="58" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
+                      <text class="node-label" x="554" y="376">人工查核</text>
+                      <text class="node-sub" x="554" y="394">確認疑似項目</text>
                     </g>
                     <g data-key="a-output-photo">
-                      <circle class="halo" cx="648" cy="334" r="43"></circle>
-                      <circle class="node-shape" cx="648" cy="334" r="38" fill="#e5ddf7" stroke="#6f55b5"></circle>
-                      <text class="node-label" x="648" y="329"><tspan x="648">標註後照片</tspan></text>
-                      <text class="node-sub" x="648" y="350">範圍 / 類型</text>
+                      <circle class="halo" cx="672" cy="318" r="43"></circle>
+                      <circle class="node-shape" cx="672" cy="318" r="38" fill="#e5ddf7" stroke="#6f55b5"></circle>
+                      <text class="node-label" x="672" y="313"><tspan x="672">標註照片</tspan></text>
+                      <text class="node-sub" x="672" y="334">範圍 / 類型</text>
                     </g>
                     <g data-key="a-output-form">
-                      <circle class="halo" cx="648" cy="430" r="43"></circle>
-                      <circle class="node-shape" cx="648" cy="430" r="38" fill="#e5ddf7" stroke="#6f55b5"></circle>
-                      <text class="node-label" x="648" y="425"><tspan x="648">新表單</tspan></text>
-                      <text class="node-sub" x="648" y="446">填寫內容</text>
+                      <circle class="halo" cx="672" cy="444" r="43"></circle>
+                      <circle class="node-shape" cx="672" cy="444" r="38" fill="#e5ddf7" stroke="#6f55b5"></circle>
+                      <text class="node-label" x="672" y="439"><tspan x="672">表單填寫</tspan></text>
+                      <text class="node-sub" x="672" y="460">填寫內容</text>
                     </g>
 
                     <line class="line" data-line="a-line-input" x1="152" y1="382" x2="300" y2="382" marker-end="url(#cleanArrowA)"></line>
-                    <path class="line" data-line="a-line-review" d="M410 372 C458 360 486 342 520 342" marker-end="url(#cleanArrowA)"></path>
-                    <path class="line" data-line="a-line-photo" d="M412 382 C500 380 546 336 610 334" marker-end="url(#cleanArrowA)"></path>
-                    <path class="line" data-line="a-line-form" d="M412 392 C500 402 546 430 610 430" marker-end="url(#cleanArrowA)"></path>
+                    <path class="line" data-line="a-line-review" d="M412 382 H500" marker-end="url(#cleanArrowA)"></path>
+                    <path class="line" data-line="a-line-photo" d="M608 376 C638 368 650 342 654 330" marker-end="url(#cleanArrowA)"></path>
+                    <path class="line" data-line="a-line-form" d="M608 390 C638 402 650 426 654 438" marker-end="url(#cleanArrowA)"></path>
                   </svg>
                 </div>
               </div>
@@ -1319,29 +1344,21 @@
                 <h3>流程 B：Graph 維護支線</h3>
                 <p>當法規/內規、表單或歷史資料需要更新時，Graph 透過版本邊保留舊資料可追溯性；新增情境則由法規核心往外推導表單欄位、內規建議與資料對應。</p>
               </div>
-              <span class="interaction-hint">點左側步驟看右側對應位置</span>
+              <span class="interaction-hint">點左側情境展開右側圖</span>
             </div>
             <div class="interactive-body">
               <div class="flow-picker">
-                <button class="flow-step is-active" type="button" data-targets="b-law b-case-law b-line-law" data-tone="amber" aria-pressed="true">
-                  <strong>1. 第一層：法規 / 內規異動</strong>
-                  <span>修法、新增法條，或確認法律/內規無更新。</span>
+                <button class="flow-step is-active" type="button" data-targets="b-update-case b-update-line b-update-old b-update-new b-update-history b-core-law b-core-form b-core-history" data-tone="amber" aria-pressed="true">
+                  <strong>情境 1：更新</strong>
+                  <span>原法律/內規修法 → 表單更新 → 舊表單舊資料與更新表單勾稽。</span>
                 </button>
-                <button class="flow-step" type="button" data-targets="b-form b-case-form b-line-form" data-tone="teal" aria-pressed="false">
-                  <strong>2. 第二層：表單更新或新增</strong>
-                  <span>表單欄位更新、新版表單，或由新增法條產生表單內容建議。</span>
+                <button class="flow-step" type="button" data-targets="b-newlaw-case b-newlaw-line b-newlaw-article b-newlaw-suggest b-newlaw-rule b-core-law b-core-form" data-tone="teal" aria-pressed="false">
+                  <strong>情境 2：新增法條</strong>
+                  <span>法律/內規新增法條 → 表單內容建議，或內規補充建議。</span>
                 </button>
-                <button class="flow-step" type="button" data-targets="b-history b-case-history b-line-history" data-tone="blue" aria-pressed="false">
-                  <strong>3. 第三層：歷史資料勾稽</strong>
-                  <span>舊表單、舊查驗資料與新表單建立版本映射。</span>
-                </button>
-                <button class="flow-step" type="button" data-targets="b-review b-line-review" data-tone="red" aria-pressed="false">
-                  <strong>4. 人工審核</strong>
-                  <span>確認建議欄位、內規補充與版本映射是否納入正式 Graph。</span>
-                </button>
-                <button class="flow-step" type="button" data-targets="b-update b-line-update" data-tone="green" aria-pressed="false">
-                  <strong>5. 更新 Graph</strong>
-                  <span>寫入新版節點、表單欄位、歷史關聯與版本邊。</span>
+                <button class="flow-step" type="button" data-targets="b-newform-case b-newform-line b-newform-law b-newform-field b-newform-content b-core-law b-core-form" data-tone="green" aria-pressed="false">
+                  <strong>情境 3：表單新增</strong>
+                  <span>法律/內規無更新，但表單新增 → 表單內容新增。</span>
                 </button>
               </div>
 
@@ -1354,69 +1371,86 @@
                       </marker>
                     </defs>
 
-                    <text class="title" x="34" y="42">Graph 維護支線</text>
-                    <text class="small" x="34" y="64">更新不覆蓋舊資料；新增則由法規核心向外推導表單建議、內規補充與歷史資料對應。</text>
+                    <text class="title" x="34" y="42">Graph 維護：三種變化情境</text>
+                    <text class="small" x="34" y="64">按左側情境，右側會展開該情境下新增/更新的 node 與 relations。</text>
 
-                    <g data-key="b-case-law">
-                      <rect class="node-shape" x="52" y="104" width="138" height="60" rx="8" fill="#f7dfb7" stroke="#a36200"></rect>
-                      <text class="node-label" x="121" y="128">修法 / 新增法條</text>
-                      <text class="node-sub" x="121" y="148">或法律無更新</text>
+                    <g data-key="b-core-law">
+                      <circle class="halo" cx="150" cy="245" r="54"></circle>
+                      <circle class="node-shape" cx="150" cy="245" r="48" fill="#d7e8fb" stroke="#2166a5"></circle>
+                      <text class="node-label" x="150" y="238"><tspan x="150">法規</tspan><tspan x="150" dy="18">內規</tspan></text>
+                      <text class="node-sub" x="150" y="276">第一層</text>
+                    </g>
+                    <g data-key="b-core-form">
+                      <circle class="halo" cx="380" cy="245" r="50"></circle>
+                      <circle class="node-shape" cx="380" cy="245" r="44" fill="#f7d7d7" stroke="#b23b3b"></circle>
+                      <text class="node-label" x="380" y="247">表單</text>
+                      <text class="node-sub" x="380" y="274">第二層</text>
+                    </g>
+                    <g data-key="b-core-history">
+                      <circle class="halo" cx="610" cy="245" r="50"></circle>
+                      <circle class="node-shape" cx="610" cy="245" r="44" fill="#f7dfb7" stroke="#a36200"></circle>
+                      <text class="node-label" x="610" y="247">歷史資料</text>
+                      <text class="node-sub" x="610" y="274">第三層</text>
+                    </g>
+                    <line class="line" x1="198" y1="245" x2="336" y2="245" marker-end="url(#cleanArrowB)"></line>
+                    <line class="line" x1="424" y1="245" x2="566" y2="245" marker-end="url(#cleanArrowB)"></line>
+
+                    <g data-scenario data-key="b-update-case">
+                      <rect class="scenario-box" x="54" y="96" width="652" height="116" rx="10"></rect>
+                      <text class="scenario-title" x="72" y="124">情境 1：更新</text>
+                      <g data-key="b-update-old">
+                        <rect class="node-shape" x="86" y="148" width="118" height="42" rx="8" fill="#eef3f6" stroke="#8ea1ad"></rect>
+                        <text class="node-sub" x="145" y="174">原法律/內規修法</text>
+                      </g>
+                      <g data-key="b-update-new">
+                        <rect class="node-shape" x="304" y="148" width="112" height="42" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
+                        <text class="node-sub" x="360" y="174">表單更新</text>
+                      </g>
+                      <g data-key="b-update-history">
+                        <rect class="node-shape" x="520" y="148" width="146" height="42" rx="8" fill="#f7dfb7" stroke="#a36200"></rect>
+                        <text class="node-sub" x="593" y="174">舊資料與新版勾稽</text>
+                      </g>
+                      <line class="line" data-line="b-update-line" x1="204" y1="169" x2="304" y2="169" marker-end="url(#cleanArrowB)"></line>
+                      <line class="line" data-line="b-update-line" x1="416" y1="169" x2="520" y2="169" marker-end="url(#cleanArrowB)"></line>
                     </g>
 
-                    <g data-key="b-law">
-                      <circle class="halo" cx="120" cy="246" r="54"></circle>
-                      <circle class="node-shape" cx="120" cy="246" r="48" fill="#d7e8fb" stroke="#2166a5"></circle>
-                      <text class="node-label" x="120" y="239"><tspan x="120">法規</tspan><tspan x="120" dy="18">內規</tspan></text>
-                      <text class="node-sub" x="120" y="277">第一層</text>
+                    <g data-scenario data-key="b-newlaw-case">
+                      <rect class="scenario-box" x="54" y="304" width="306" height="150" rx="10"></rect>
+                      <text class="scenario-title" x="72" y="332">情境 2：新增法條</text>
+                      <g data-key="b-newlaw-article">
+                        <rect class="node-shape" x="82" y="360" width="120" height="44" rx="8" fill="#d7e8fb" stroke="#2166a5"></rect>
+                        <text class="node-sub" x="142" y="386">新增法條</text>
+                      </g>
+                      <g data-key="b-newlaw-suggest">
+                        <rect class="node-shape" x="238" y="344" width="106" height="42" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
+                        <text class="node-sub" x="291" y="370">表單內容建議</text>
+                      </g>
+                      <g data-key="b-newlaw-rule">
+                        <rect class="node-shape" x="238" y="404" width="106" height="42" rx="8" fill="#ccece8" stroke="#0b7b75"></rect>
+                        <text class="node-sub" x="291" y="430">內規建議</text>
+                      </g>
+                      <path class="line" data-line="b-newlaw-line" d="M202 382 H238" marker-end="url(#cleanArrowB)"></path>
+                      <path class="line" data-line="b-newlaw-line" d="M202 382 C222 398 224 424 238 424" marker-end="url(#cleanArrowB)"></path>
                     </g>
 
-                    <g data-key="b-case-form">
-                      <rect class="node-shape" x="250" y="104" width="138" height="60" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
-                      <text class="node-label" x="319" y="128">表單內容建議</text>
-                      <text class="node-sub" x="319" y="148">欄位 / 填寫規則</text>
+                    <g data-scenario data-key="b-newform-case">
+                      <rect class="scenario-box" x="430" y="304" width="276" height="150" rx="10"></rect>
+                      <text class="scenario-title" x="448" y="332">情境 3：表單新增</text>
+                      <g data-key="b-newform-law">
+                        <rect class="node-shape" x="452" y="360" width="98" height="44" rx="8" fill="#eef3f6" stroke="#8ea1ad"></rect>
+                        <text class="node-sub" x="501" y="378"><tspan x="501">法律/內規</tspan><tspan x="501" dy="14">無更新</tspan></text>
+                      </g>
+                      <g data-key="b-newform-field">
+                        <rect class="node-shape" x="584" y="344" width="98" height="42" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
+                        <text class="node-sub" x="633" y="370">表單新增</text>
+                      </g>
+                      <g data-key="b-newform-content">
+                        <rect class="node-shape" x="584" y="404" width="98" height="42" rx="8" fill="#dcebdc" stroke="#3a7b45"></rect>
+                        <text class="node-sub" x="633" y="430">內容新增</text>
+                      </g>
+                      <path class="line" data-line="b-newform-line" d="M550 382 C570 374 576 365 584 365" marker-end="url(#cleanArrowB)"></path>
+                      <path class="line" data-line="b-newform-line" d="M633 386 V404" marker-end="url(#cleanArrowB)"></path>
                     </g>
-
-                    <g data-key="b-form">
-                      <circle class="halo" cx="320" cy="246" r="54"></circle>
-                      <circle class="node-shape" cx="320" cy="246" r="48" fill="#f7d7d7" stroke="#b23b3b"></circle>
-                      <text class="node-label" x="320" y="247">表單</text>
-                      <text class="node-sub" x="320" y="277">第二層</text>
-                    </g>
-
-                    <g data-key="b-case-history">
-                      <rect class="node-shape" x="250" y="364" width="138" height="60" rx="8" fill="#f7dfb7" stroke="#a36200"></rect>
-                      <text class="node-label" x="319" y="388">舊表單舊資料</text>
-                      <text class="node-sub" x="319" y="408">對應新表單</text>
-                    </g>
-
-                    <g data-key="b-history">
-                      <circle class="halo" cx="520" cy="246" r="54"></circle>
-                      <circle class="node-shape" cx="520" cy="246" r="48" fill="#f7dfb7" stroke="#a36200"></circle>
-                      <text class="node-label" x="520" y="247">歷史資料</text>
-                      <text class="node-sub" x="520" y="277">第三層</text>
-                    </g>
-
-                    <g data-key="b-review">
-                      <rect class="node-shape" x="584" y="104" width="118" height="60" rx="8" fill="#f7d7d7" stroke="#b23b3b"></rect>
-                      <text class="node-label" x="643" y="128">人工審核</text>
-                      <text class="node-sub" x="643" y="148">確認可納入</text>
-                    </g>
-
-                    <g data-key="b-update">
-                      <rect class="node-shape" x="584" y="364" width="118" height="60" rx="8" fill="#dcebdc" stroke="#3a7b45"></rect>
-                      <text class="node-label" x="643" y="388">更新 Graph</text>
-                      <text class="node-sub" x="643" y="408">版本邊 / 關聯邊</text>
-                    </g>
-
-                    <line class="line" data-line="b-line-law" x1="120" y1="164" x2="120" y2="198" marker-end="url(#cleanArrowB)"></line>
-                    <line class="line" data-line="b-line-form" x1="168" y1="246" x2="272" y2="246" marker-end="url(#cleanArrowB)"></line>
-                    <line class="line" data-line="b-line-history" x1="368" y1="246" x2="472" y2="246" marker-end="url(#cleanArrowB)"></line>
-                    <path class="line" data-line="b-line-review" d="M562 226 C602 204 626 176 638 164" marker-end="url(#cleanArrowB)"></path>
-                    <path class="line" data-line="b-line-update" d="M562 274 C602 304 626 344 638 364" marker-end="url(#cleanArrowB)"></path>
-                    <path class="guide-line" d="M520 294 C474 358 414 392 388 394"></path>
-                    <text class="small" x="408" y="370">版本映射</text>
-                    <path class="guide-line" d="M190 134 H250"></path>
-                    <path class="guide-line" d="M320 164 V198"></path>
                   </svg>
                 </div>
               </div>
