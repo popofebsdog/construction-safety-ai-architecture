@@ -158,6 +158,27 @@
       overflow: hidden;
     }
 
+    .intro-player {
+      display: grid;
+      gap: 10px;
+    }
+
+    .intro-player video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #111820;
+      box-shadow: var(--shadow);
+    }
+
+    .intro-player-caption {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0;
+    }
+
     .motion-stage::before {
       content: "";
       position: absolute;
@@ -1549,30 +1570,12 @@
             </ul>
           </div>
 
-          <div class="motion-stage" aria-label="VLM 與可更新 Graph 的介紹動畫">
-            <div class="motion-title">INTRO MOTION</div>
-            <div class="mini-graph" aria-hidden="true">
-              <div class="motion-line" style="left: 70px; top: 70px; width: 96px;"></div>
-              <div class="motion-line" style="left: 166px; top: 70px; width: 44px;"></div>
-              <div class="motion-line" style="left: 132px; top: 44px; width: 42px; transform: rotate(90deg);"></div>
-              <div class="mini-graph-node rule">法條<br>內規</div>
-              <div class="mini-graph-node form">表單</div>
-              <div class="mini-graph-node content">內容</div>
-              <div class="mini-graph-node update">可更新</div>
-            </div>
-            <div class="anchor-chip">判釋錨點</div>
-            <div class="motion-node photo"><strong>新拍照片</strong><span>照片 + 工程資料</span></div>
-            <div class="motion-line photo-vlm"></div>
-            <div class="motion-line graph-vlm"></div>
-            <div class="motion-node vlm"><strong>Context-Guided VLM</strong><span>依錨點看圖</span></div>
-            <div class="motion-line vlm-output"></div>
-            <div class="motion-node alert"><strong>標註照片</strong><span>抓出重點區域</span></div>
-            <div class="motion-node form"><strong>表單填寫</strong><span>對應欄位內容</span></div>
-            <div class="caption-strip">
-              <div class="caption-card">先從工地照片進入 VLM。</div>
-              <div class="caption-card">Graph 提供判斷脈絡，讓模型聚焦安全重點。</div>
-              <div class="caption-card">法條、表單、內容更新時，Graph 也能同步調整。</div>
-            </div>
+          <div class="intro-player" aria-label="系統介紹影片播放器">
+            <video controls playsinline preload="metadata">
+              <source src="assets/sample.mp4" type="video/mp4">
+              您的瀏覽器不支援影片播放。
+            </video>
+            <p class="intro-player-caption">介紹影片：VLM 透過 Graph 抓到判讀重點，Graph 可隨法條/內規、表單與內容更新。</p>
           </div>
         </div>
       </div>
