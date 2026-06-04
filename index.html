@@ -1600,12 +1600,12 @@
           <h2>展示板重點</h2>
           <div class="flow-branches" aria-label="展示板重點">
             <div class="flow-branch">
-              <h3>流程 A：VLM + 圖譜判讀主流程</h3>
+              <h3>功能 A：VLM 依知識圖譜進行影像判讀與輸出</h3>
               <p class="summary-caption">新拍照片進入 Context-Guided VLM；三層 Graph 只建立判釋錨點，人工查核後輸出標註照片或表單填寫。</p>
             </div>
 
             <div class="flow-branch">
-              <h3>流程 B：Graph 維護支線</h3>
+              <h3>功能 B：知識圖譜調整與更新</h3>
               <p class="summary-caption">法規/內規、表單與歷史資料可更新、新增與版本勾稽，避免舊資料失去對照關係。</p>
             </div>
             <a class="pill" href="#interactive-graph">查看互動架構圖</a>
@@ -1619,15 +1619,14 @@
         <div class="section-head">
           <div>
             <h2>互動 Graph 架構圖</h2>
-            <p>流程 A 呈現照片判讀主幹；流程 B 呈現 Graph 在三種更新/新增情境下的變化。點選左側項目時，右側圖會展開對應節點與關係。</p>
           </div>
         </div>
 
         <div class="interactive-stack">
-          <article class="interactive-arch" aria-label="流程 A：VLM 加圖譜判讀主流程">
+          <article class="interactive-arch" aria-label="功能 A：VLM 依知識圖譜進行影像判讀與輸出">
             <div class="interactive-head">
               <div>
-                <h3>流程 A：VLM + 圖譜判讀主流程</h3>
+                <h3>功能 A：VLM 依知識圖譜進行影像判讀與輸出</h3>
                 <p>新拍照片進入 Context-Guided Visual Language Model（VLM，脈絡引導式視覺語言模型）看圖判讀；上方三層圖譜只負責建立判釋錨點，人工查核後輸出標註後照片或表單填寫內容。</p>
               </div>
               <span class="interaction-hint">點左側步驟看右側對應位置</span>
@@ -1658,7 +1657,7 @@
 
               <div class="diagram-panel">
                 <div class="diagram-canvas" aria-label="流程 A 互動圖">
-                  <svg class="clean-svg" viewBox="0 0 760 500" role="img" aria-label="流程 A：上方三層圖譜建立錨點，下方 VLM 輸出標註照片與表單">
+                  <svg class="clean-svg" viewBox="0 0 760 500" role="img" aria-label="功能 A：上方三層圖譜建立錨點，下方 VLM 輸出標註照片與表單">
                     <defs>
                       <marker id="cleanArrowA" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
                         <path d="M0,0 L0,7 L7,3.5 z" fill="#8ea1ad"></path>
@@ -1750,10 +1749,10 @@
             </div>
           </article>
 
-          <article class="interactive-arch" id="flow-b" aria-label="流程 B：Graph 維護支線">
+          <article class="interactive-arch" id="flow-b" aria-label="功能 B：知識圖譜調整與更新">
             <div class="interactive-head">
               <div>
-                <h3>流程 B：Graph 維護支線</h3>
+                <h3>功能 B：知識圖譜調整與更新</h3>
                 <p>當法條/內規、表單或內容需要更新時，Graph 透過版本邊保留資料可追溯性；新增情境則依層級關係建立跨層或同層勾稽。</p>
               </div>
               <span class="interaction-hint">點左側情境展開右側圖</span>
@@ -1776,7 +1775,7 @@
 
               <div class="diagram-panel">
                 <div class="diagram-canvas compact" aria-label="流程 B 互動圖">
-                  <svg class="clean-svg" viewBox="0 0 760 500" role="img" aria-label="流程 B：圖譜維護支線">
+                  <svg class="clean-svg" viewBox="0 0 760 500" role="img" aria-label="功能 B：知識圖譜調整與更新">
                     <defs>
                       <marker id="cleanArrowB" markerWidth="4" markerHeight="4" refX="3.5" refY="2" orient="auto">
                         <path d="M0,0 L0,4 L4,2 z" fill="#8ea1ad"></path>
